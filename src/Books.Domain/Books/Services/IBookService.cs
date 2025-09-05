@@ -1,0 +1,9 @@
+using Books.Common.TryResult;
+using Books.Domain.Books.Models;
+
+namespace Books.Domain.Books.Services;
+
+public interface IBookService
+{
+    Task<TryResult<Book>> GetBookAsync(int id);
+}

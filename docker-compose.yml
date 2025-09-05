@@ -1,0 +1,16 @@
+services:
+  books-api:
+    build:
+      context: .
+      dockerfile: src/Books.API/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Database__ConnectionString=Server=localhost;Database=Books;User Id=sa;Password=***;
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
