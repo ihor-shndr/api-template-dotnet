@@ -1,13 +1,13 @@
-Books API Project Brief
+# Books APIя Project Brief
 
-  Project Overview
+  ## Project Overview
 
   This is a .NET-based Books API template project implementing a clean
   architecture pattern for book management. The project serves as a
   foundation for building book-related applications with RESTful API
   endpoints.
 
-  Architecture & Structure
+  ## Architecture & Structure
 
   Clean Architecture Implementation
 
@@ -25,7 +25,7 @@ Books API Project Brief
   - Service Layer: Business logic encapsulation in dedicated service classes
   - Mapper Pattern: DTO-to-domain model conversion
 
-  Technical Implementation
+  ## Technical Implementation
 
   Error Handling Approach
 
