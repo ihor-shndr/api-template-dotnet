@@ -2,11 +2,11 @@
 
 ## 1) Before you start — context is everything
 
-The more you invest in the initial prompt, the better. Prepare a **context pack** (problem definition, target audience, technical constraints, APIs/schemas, sample data, glossary). Be explicit and verbose. More context now = less refactoring later.
+The more you invest in the initial prompt, the better. Prepare a **context pack** (problem definition, target audience, technical constraints, APIs/schemas, sample data, glossary). Be explicit and verbose. **More context now = less refactoring later**.
 
 ## 2) While building — show, don't tell
 
-Start from a **skeleton app**. We have a starter template with proper layering & error handling—you can use it as a starting point. When you share it with AI, it won't need to guess your architecture. Define **interfaces/types** first; ask the agent to implement **against them**. Work in **small loops**: Plan → Implement → Review → Test.
+Start from a **skeleton app**. We have a starter template with proper layering & error handling—you can use it as a starting point. When you share it with AI, it won't need to guess your architecture. Define **interfaces/types** first; ask the agent to implement against them. Work in **small loops**: Plan → Implement → Review → Test.
 
 ## 3) After each step — iterate to demo-ready
 
