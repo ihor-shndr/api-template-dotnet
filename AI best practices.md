@@ -12,7 +12,7 @@ Start from a **skeleton app**. We have a starter template with proper layering &
 
 **Timebox** your iterations to a single user story. Don't ask AI to do everything in one go—while LLMs can handle complex requests, you won't like the result :) . Also, it will easily become unmanageable as you won't be able to grasp the LLM's output.
 
-## Useful add-ons & techniques
+## Other useful techniques
 
 * **Memory bank (e.g., Cline-style):** Maintain a living summary of decisions, APIs, edge cases, and TODOs. Ask the agent to **update memory after every loop** and seed it at the start. However, this is more useful when building production-ready apps, not prototyping.
 
