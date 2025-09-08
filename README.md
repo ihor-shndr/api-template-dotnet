@@ -1,4 +1,4 @@
-# Books APIя Project Brief
+# Books API Project Brief
 
   ## Project Overview
 
