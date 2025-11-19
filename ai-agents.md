@@ -11,8 +11,8 @@
 
 | **Tool** | **Main Issues** |
 |----------|----------------|
-| **Cursor** | Separate VS Code based IDE -> Not good for .NET |
-| **Claude Code** | No autocomplete -> Not good for Web |
+| **Cursor** | Separate VS Code based IDE -> Not good for .NET devs|
+| **Claude Code** | No autocomplete -> Not good for Web devs (can be added in fututre)|
 | **Copilot Pro** | Weaker reasoning but works both for FE & BE |
 
 
@@ -21,7 +21,7 @@
 ### Cursor 💡
 - **Pros**: Very fast, excellent for frontend work, built-in browser view, multi-agent capabilities
 - **Cons**: Not optimized for .NET
-- **Best for**: Teams doing heavy React/Next.js development
+- **Best for**: Teams doing heavy FE development (eg. React)
 
 ### Claude Code 🎯
 - **Pros**: Best for architecture and planning, excellent multi-file operations
@@ -37,7 +37,7 @@
 
 | **Feature** | **Cursor** | **Claude Code** | **GitHub Copilot Pro** |
 |----------|------------|-------------------|----------------------|
-| **LLM Models** | ✅ Good | ◐ Anthropic only  | ✅ Good |
+| **LLM Models** | ✅ Good | ◐ Anthropic only (vendor lock)  | ✅ Good |
 | **Autocomplete** | ✅✅ Excellent | ❌ No | ✅ Good |
 | **Multi-file edits** | ✅ Yes | ✅✅ Best | ✅ Yes |
 | **Architecture/Design** | ✅ Good| ✅✅ Excellent | ✅ Good |
@@ -51,13 +51,13 @@
 | **Stack** | **Cursor** | **Claude Code** | **GitHub Copilot Pro** |
 |----------|------------|-------------------|----------------------|
 | **.NET/C# Support** | ◐ Works | ✅ Good | ✅✅ Best  |
-| **Frontend (React/Next)** | ✅✅ Excellent | ◐ Slower | ✅ Good |
+| **Frontend (React/Next)** | ✅✅ Excellent | ◐ Weak | ✅ Good |
 
 ## 🎨 UX & Integration
 
 | **Aspect** | **Cursor** | **Claude Code** | **GitHub Copilot Pro** |
 |----------|------------|-------------------|----------------------|
-| **IDE** | VS Code fork | CLI + Extension | Extension VS/VS Code/Rider |
+| **IDE** | VS Code fork | CLI + Extensions | Extensions VS/VS Code/Rider |
 | **Learning curve** | Medium | Medium | Low |
 
 ## 💰 Pricing & Limits
