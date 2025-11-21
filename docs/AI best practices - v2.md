@@ -55,7 +55,7 @@ When joining a project, avoid spending hours manually tracing dependencies. Open
 
 > *"What are the main entry points for the billing service? How does it communicate with Stripe?"*
 
-Within seconds, you'll receive a coherent overview—like having a patient colleague who actually remembers how everything fits together. For deeper understanding, highlight a specific function and ask:
+You'll quickly receive a coherent overview—like having a patient colleague who actually remembers how everything fits together. For deeper understanding, highlight a specific function and ask:
 
 > *"Explain the `processRefund` function step-by-step. What edge cases does it handle?"*
 
