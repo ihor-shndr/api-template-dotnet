@@ -71,7 +71,7 @@ While not a substitute for human review, it consistently catches obvious issuesâ
 
 ### Use Case: Accelerating QA Workflows
 
-QA team members can reduce dependencies on engineers for code-level questions. Instead of waiting for Slack responses (or decoding those cryptic commit messages), ask Copilot directly:
+QA team members can reduce dependencies on engineers for code-level questions. Instead of waiting for dev responses you can ask Copilot directly:
 
 > *"What are the possible status codes and response structures for the `/api/v2/users/{id}` endpoint?"*
 
