@@ -97,7 +97,7 @@ public List<UserRecord> ParseUserCsv(string csvData)
 }
 ```
 
-If the suggestion is mostly correct, accept it and adjust the remainder manually. Repeatedly cycling through suggestions rarely yields better results than making targeted fixes yourself. (Pro tip: If you've hit "Tab" and "Ctrl+Z" more than three times on the same line, just write it yourself—it'll be faster, and your keyboard will thank you.)
+If the suggestion is mostly correct, accept it and adjust the remainder manually. Repeatedly cycling through suggestions rarely yields better results than making targeted fixes yourself. (Tip: If you've hit "Tab" and "Ctrl+Z" more than three times on the same line, just write it yourself—it'll be faster, and your keyboard will thank you.)
 
 **Use Case: Targeted Bug Fixes and Small Modifications**  
 When you identify a specific issue or need to make a localized change, highlight the relevant code and provide clear instructions:
