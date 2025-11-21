@@ -30,7 +30,7 @@ We all know what an LLM is at its core—a sophisticated next-token prediction e
 
 Copilot doesn't automatically know the context that lives in your team's collective memory—what you decided in Slack last month, which architectural patterns you've learned to avoid, or what level of code quality is appropriate for different parts of your system. It won't inherently understand your product's business logic or distinguish between a quick prototype and production-critical code.
 
-We highly recommend reading the [**tessl.io AI Best Practices**](./docs/tessl-io-ai-best-practices.pdf). We really like it as it captures the essential mindset for working effectively with AI. Consider it required reading, but not a rigid rulebook. Adapt its principles to fit how your team actually delivers software.
+We highly recommend reading the [**tessl.io AI Best Practices**](./Best-practices_Tessl-Docs.pdf). We really like it as it captures the essential mindset for working effectively with AI. Consider it required reading, but not a rigid rulebook. Adapt its principles to fit how your team actually delivers software.
 
 **GitHub Copilot is supported across all popular IDEs**—Visual Studio, VS Code, JetBrains Rider, IntelliJ IDEA, and more. This means you can use it in your existing development environment without switching tools or learning new interfaces.
 
