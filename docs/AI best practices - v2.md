@@ -197,7 +197,7 @@ Here's an example for a C# project:
 The beauty is that modern agents automatically consider this file when generating code—you don't need to explicitly reference it in every prompt. Just keep it current, and the quality improvements happen automatically.
 
 **Use Case: Planning as a Default Habit**  
-For non-trivial work, planning is not optional—it's the foundation of success. Instead of asking for immediate implementation:
+For non-trivial work, planning is not optional—it's the foundation of success. Instead of asking for immediate implementation switch to `Plan` mode in Copilot and ask something like this:
 
 > *"Create a plan for adding rate limiting to the GraphQL endpoint. Store it in plans/rate-limit.md."*
 
@@ -248,15 +248,12 @@ Or for an API endpoint (C#):
 Review and validate each step before proceeding. Without disciplined oversight, prototypes become technical debt. (Translation: that "quick spike" you did on Friday will somehow become the production system by Monday. We've all been there.)
 
 **When Copilot Reaches Its Limits**  
-For large-scale refactors, architectural overhauls, or spec-driven greenfield projects, Copilot's context window (~128k tokens) becomes restrictive. Think of it like trying to renovate an entire house while looking through a keyhole—technically possible, but you'll miss a lot of important details.
+For large-scale refactors, architectural overhauls, or spec-driven greenfield projects, Copilot's context window (~128k tokens) becomes restrictive. If you find yourself hitting these limits and feel confident exploring more advanced tools, you might consider:
 
-If you find yourself consistently hitting these limits and feel confident exploring more advanced tools, you might consider:
-
-- **Claude Code** (standalone CLI): Larger context window, excels at repository-wide reasoning and multi-file refactoring. Ideal for "refactor the entire payment module" scenarios.
-- **Cline** (VS Code extension): Very large context capacity, can leverage different AI models. Best for surgical interventions in legacy codebases.
+- **Claude Code** (CLI, Web): Larger context window, excels at repository-wide reasoning and architecture.
+- **Cline** (VS Code extension): Large context capacity, can be ocnfigured to rely on VS Code Copilot extension. Excellent for heavy tasks but burns tokens insanely fast.
 - **Speckit** (prompt engineering framework): A structured prompt library that runs within Copilot, designed for heavy spec-driven development without leaving your IDE.
 
-However, Copilot remains your daily driver for the vast majority of work. These specialized tools are for edge cases, not everyday development.
 
 ---
 
