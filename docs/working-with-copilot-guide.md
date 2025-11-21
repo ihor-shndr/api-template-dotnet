@@ -1,6 +1,5 @@
-# Working with Copilot: A Practical Guide for Your Team by Empeek
 
-## TL;DR: Recommended Use Cases
+## TL;DR on Recommended Use Cases
 
 **Information Retrieval** (Just ask questions):
 - **Understanding a New Codebase** - Get instant overviews of unfamiliar code, trace dependencies, and understand function behavior
@@ -24,6 +23,8 @@
 - **Rapid Prototyping** - Generate proof-of-concept code quickly but iteratively
 
 ---
+# Working with Copilot: A Practical Guide for Your Team by Empeek
+
 
 We all know what an LLM is at its core—a sophisticated next-token prediction engine that's fundamentally non-deterministic. This means AI coding assistants work differently than traditional tools you might be used to. Think of Copilot as a highly capable junior engineer who has read millions of codebases and responds instantly, bringing that vast knowledge to every interaction. However, like any junior developer, it has limitations worth understanding upfront.
 
@@ -49,7 +50,7 @@ Below are proven use cases from our experience and observations, ordered from si
 ## Section 1: Information Retrieval  
 *These tasks require minimal learning curve—just ask questions.*
 
-### Understanding a New Codebase
+### Use Case: Understanding a New Codebase
 
 When joining a project, avoid spending hours manually tracing dependencies. Open Copilot Chat in your IDE:
 
@@ -61,7 +62,7 @@ Within seconds, you'll receive a coherent overview—like having a patient colle
 
 Use this as an interactive documentation tool. Consider maintaining a personal `ONBOARDING.md` file where you capture these explanations for future reference.
 
-### PR Review Assistance
+### Use Case: PR Review Assistance
 
 In GitHub, activate Copilot on any pull request:
 
@@ -69,7 +70,7 @@ In GitHub, activate Copilot on any pull request:
 
 While not a substitute for human review, it consistently catches obvious issues—such as unhandled null cases or missing error handling—that can slip through when reviewing at 4 PM on a Friday. **Tip:** Add custom instructions like *"Focus on security vulnerabilities and promise rejections"* to tailor the analysis.
 
-### Accelerating QA Workflows
+### Use Case: Accelerating QA Workflows
 
 QA team members can reduce dependencies on engineers for code-level questions. Instead of waiting for Slack responses (or decoding those cryptic commit messages), ask Copilot directly:
 
@@ -86,7 +87,7 @@ For test planning:
 
 ### ⭐ **1-Star: Autocomplete and Surgical Fixes**
 
-**Daily Autocomplete Usage**  
+**Use Case: Daily Autocomplete Usage**  
 The most common pattern is straightforward: write a clear, descriptive comment first:
 
 ```csharp
@@ -99,7 +100,7 @@ public List<UserRecord> ParseUserCsv(string csvData)
 
 If the suggestion is mostly correct, accept it and adjust the remainder manually. Repeatedly cycling through suggestions rarely yields better results than making targeted fixes yourself. (Pro tip: If you've hit "Tab" and "Ctrl+Z" more than three times on the same line, just write it yourself—it'll be faster, and your keyboard will thank you.)
 
-**Targeted Bug Fixes and Small Modifications**  
+**Use Case: Targeted Bug Fixes and Small Modifications**  
 When you identify a specific issue or need to make a localized change, highlight the relevant code and provide clear instructions:
 
 > *"Fix the loop bounds error. Minimize changes to preserve existing logic."*
@@ -117,6 +118,15 @@ The key is specificity—tell Copilot exactly what needs to change and what cons
 These surgical changes are Copilot's sweet spot. The more context you provide about what should stay the same, the better the result. Always review the generated diff before accepting—sometimes the AI will make reasonable but unintended changes to surrounding code.
 
 **A pragmatic note:** If you find yourself repeatedly rejecting suggestions and fighting with the AI over a simple change, it's often faster to just write it yourself. Where AI truly shines is on work that would take you hours or even days—complex implementations, boilerplate-heavy features, or exploratory coding where you're not entirely sure of the approach yet. Don't spend five minutes getting AI to generate a two-line change you could write in thirty seconds.
+
+**Use Case: Generating Commit Messages and PR Descriptions**  
+Stop writing "upd" or "small change" as commit messages. Let Copilot analyze your changes and generate meaningful descriptions. Most IDEs have a built-in sparkle icon (✨) in the source control panel that generates commit messages with one click. Alternatively, ask in chat:
+
+> *"Generate a commit message for my staged changes."*
+
+> *"Create a PR description summarizing the changes in this branch."*
+
+The AI will review your diff and produce descriptive, professional text that explains what changed and why—making your git history actually useful for future reference. This is especially valuable when you've made multiple related changes and need to articulate the overall impact clearly.
 
 ### ⭐⭐ **2-Star: Feature Implementation**
 
