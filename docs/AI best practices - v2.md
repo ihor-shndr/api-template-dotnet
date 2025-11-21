@@ -49,7 +49,7 @@ Below are proven use cases from our experience and observations, ordered from si
 ## Section 1: Information Retrieval  
 *These tasks require minimal learning curve—just ask questions.*
 
-### Use Case: Understanding a New Codebase
+### Understanding a New Codebase
 
 When joining a project, avoid spending hours manually tracing dependencies. Open Copilot Chat in your IDE:
 
@@ -61,7 +61,7 @@ You'll quickly receive a coherent overview—like having a patient colleague who
 
 Use this as an interactive documentation tool. Consider maintaining a personal `ONBOARDING.md` file where you capture these explanations for future reference.
 
-### Use Case: PR Review Assistance
+### PR Review Assistance
 
 In GitHub, activate Copilot on any pull request:
 
@@ -69,7 +69,7 @@ In GitHub, activate Copilot on any pull request:
 
 While not a substitute for human review, it consistently catches obvious issues—such as unhandled null cases or missing error handling—that can slip through when reviewing at 4 PM on a Friday. 
 
-### Use Case: Accelerating QA Workflows
+### Accelerating QA Workflows
 
 QA team members can reduce dependencies on engineers for code-level questions. Instead of waiting for dev responses you can ask Copilot directly:
 
@@ -86,7 +86,7 @@ For test planning:
 
 ### ⭐ **1-Star: Autocomplete and Surgical Fixes**
 
-**Use Case: Daily Autocomplete Usage**  
+### Daily Autocomplete Usage  
 The most common pattern is straightforward: write a clear, descriptive comment first:
 
 ```csharp
@@ -99,7 +99,7 @@ public List<UserRecord> ParseUserCsv(string csvData)
 
 If the suggestion is mostly correct, accept it and adjust the remainder manually. Repeatedly cycling through suggestions rarely yields better results than making targeted fixes yourself. (Tip: If you've hit "Tab" and "Ctrl+Z" more than three times on the same line, just write it yourself—it'll be faster, and your keyboard will thank you.)
 
-**Use Case: Targeted Bug Fixes and Small Modifications**  
+### Targeted Bug Fixes and Small Modifications  
 When you identify a specific issue or need to make a localized change, highlight the relevant code and provide clear instructions:
 
 > *"Fix the loop bounds error. Minimize changes to preserve existing logic."*
@@ -118,7 +118,7 @@ These surgical changes are Copilot's sweet spot. The more context you provide ab
 
 **A pragmatic note:** If you find yourself repeatedly rejecting suggestions and fighting with the AI over a simple change, it's often faster to just write it yourself. Where AI truly shines is on work that would take you hours or even days—complex implementations, boilerplate-heavy features, or exploratory coding where you're not entirely sure of the approach yet. Don't spend five minutes getting AI to generate a two-line change you could write in thirty seconds.
 
-**Use Case: Generating Commit Messages and PR Descriptions**  
+### Generating Commit Messages and PR Descriptions  
 Stop writing "upd" or "small change" as commit messages. Let Copilot analyze your changes and generate meaningful descriptions. Most IDEs have a built-in sparkle icon (✨) in the source control panel that generates commit messages with one click. Alternatively, ask in chat:
 
 > *"Generate a commit message for my staged changes."*
@@ -129,7 +129,7 @@ The AI will review your diff and produce descriptive, professional text that exp
 
 ### ⭐⭐ **2-Star: Feature Implementation**
 
-**Use Case: Writing Tests**  
+### Writing Tests  
 Copilot excels at generating comprehensive test coverage when you provide clear context about what needs testing. The key is being specific about scenarios and expectations:
 
 > *"Generate xUnit tests for the UserService.CreateUser method. Cover happy path, validation failures, and duplicate email scenarios."* (C#)
@@ -142,7 +142,7 @@ For more complex scenarios, describe the behavior you're testing:
 
 **Tip:** Let the agent run the tests itself and stay in the loop. Instead of just generating tests, ask it to create and execute them: *"Generate tests for the UserService and run them to verify they pass."* This allows the agent to catch and fix issues autonomously—it'll adjust imports, fix assertion syntax, or handle setup problems without requiring your intervention. You stay hands-off while it iterates until the tests are green.
 
-**Use Case: Using Agents.md for Quality**  
+### Using Agents.md for Quality  
 For tasks beyond simple functions, create an `Agents.md` file in your repository root. This file bridges the gap between what the AI can see in your code and what it cannot—the architectural decisions made in design meetings, the coding conventions your team agreed upon, the lessons learned from past incidents, and the quality standards that vary between rapid prototypes and production code.
 
 Think of `Agents.md` as institutional knowledge made explicit. Without it, Copilot will make reasonable but generic choices. With it, the output aligns with your team's actual practices, dramatically reducing the time spent on stylistic corrections and architectural mismatches.
@@ -195,7 +195,7 @@ Here's an example for a C# project:
 
 The beauty is that modern agents automatically consider this file when generating code—you don't need to explicitly reference it in every prompt. Just keep it current, and the quality improvements happen automatically.
 
-**Use Case: Planning as a Default Habit**  
+### Planning as a Default Habit  
 For non-trivial work, planning is not optional—it's the foundation of success. Instead of asking for immediate implementation switch to `Plan` mode in Copilot and ask something like this:
 
 > *"Create a plan for adding rate limiting to the GraphQL endpoint. Store it in plans/rate-limit.md."*
@@ -208,7 +208,7 @@ Fixing a flawed plan requires far less effort than debugging poorly structured c
 
 ### ⭐⭐⭐ **3-Star: Prototypes and Architectural Exploration**
 
-**Use Case: Multi-Phase Implementation**  
+### Multi-Phase Implementation  
 For larger features or refactoring work, break the implementation into distinct phases that you execute and validate sequentially. Start with comprehensive planning:
 
 > *"Create a detailed plan for migrating our authentication system from JWT to OAuth2 with OIDC. Include database schema changes, API modifications, and backward compatibility strategy."*
@@ -223,7 +223,7 @@ Review the plan carefully, refine it, then implement phase by phase:
 
 This approach keeps each AI session focused and manageable, allows you to catch architectural issues early, and ensures each layer is solid before building on top of it. The key difference from 2-star work is that you're deliberately pacing the implementation rather than asking for everything at once and hoping for the best.
 
-**Use Case: Rapid Prototyping**  
+### Rapid Prototyping  
 Copilot can generate functional proof-of-concept code quickly. For example:
 
 > *"Create a basic Slack bot with Express and minimal OAuth integration."* (JavaScript)
