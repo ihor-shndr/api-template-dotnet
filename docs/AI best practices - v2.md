@@ -232,6 +232,8 @@ Copilot can generate functional proof-of-concept code quickly. For example:
 
 > *"Build a React component that visualizes real-time WebSocket data with Chart.js."* (TypeScript)
 
+**Tip:** For prototypes, it's often faster to draft empty interfaces and class signatures yourself rather than explaining your naming conventions to the LLM. Write the scaffolding (interface names, method signatures, basic structure), then let Copilot fill in the implementation details. This saves back-and-forth and ensures the code follows your team's patterns from the start.
+
 **Critical caveat:** The output will not be production-ready. It typically lacks comprehensive error handling, logging, security considerations, and scalability patterns. You must remain actively engaged. Proceed iteratively:
 
 1. *"Create a Slack bot skeleton with OAuth."*
