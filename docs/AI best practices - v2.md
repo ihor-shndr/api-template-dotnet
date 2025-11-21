@@ -32,9 +32,8 @@ Copilot doesn't automatically know the context that lives in your team's collect
 
 We highly recommend reading the [**tessl.io AI Best Practices**](./Best-practices_Tessl-Docs.pdf). We really like it as it captures the essential mindset for working effectively with AI. Consider it required reading, but not a rigid rulebook. Adapt its principles to fit how your team actually delivers software.
 
-**GitHub Copilot is supported across all popular IDEs**—Visual Studio, VS Code, JetBrains Rider, IntelliJ IDEA, and more. This means you can use it in your existing development environment without switching tools or learning new interfaces.
 
-We're starting with **GitHub Copilot Pro** as our baseline tool. It's widely adopted, deeply integrated into our existing workflows, and familiar to many of you. 
+We're starting with **GitHub Copilot Pro** as our baseline tool. It's widely adopted, deeply integrated into our existing workflows, and familiar to many of you. **GitHub Copilot** is supported across all popular IDEs — Visual Studio, VS Code, JetBrains Rider, IntelliJ IDEA, and more. This means you can use it in your existing development environment without switching tools or learning new interfaces.
 
 **About the models:** Copilot works with two categories of models:
 
