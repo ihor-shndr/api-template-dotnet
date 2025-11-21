@@ -67,7 +67,7 @@ In GitHub, activate Copilot on any pull request:
 
 > *"Summarize these changes and identify potential bugs or missing test coverage."*
 
-While not a substitute for human review, it consistently catches obvious issues—such as unhandled null cases or missing error handling—that can slip through when reviewing at 4 PM on a Friday. **Tip:** Add custom instructions like *"Focus on security vulnerabilities and promise rejections"* to tailor the analysis.
+While not a substitute for human review, it consistently catches obvious issues—such as unhandled null cases or missing error handling—that can slip through when reviewing at 4 PM on a Friday. 
 
 ### Use Case: Accelerating QA Workflows
 
