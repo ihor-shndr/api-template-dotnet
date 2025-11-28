@@ -8,17 +8,17 @@
 
 **Code Generation** (Increasing complexity):
 
-⭐ **Quick Wins:**
+**Quick Wins:**
 - **Daily Autocomplete** - Write descriptive comments and let Copilot generate implementations
 - **Targeted Bug Fixes** - Make surgical code changes with minimal impact to surrounding logic
 - **Small Feature Additions** - Add properties, validation, pagination, etc. to existing code
 
-⭐⭐ **Mid-Size Features:**
+**Mid-Size Features:**
 - **Writing Tests** - Generate test coverage for unit, integration, and edge-case scenarios
 - **Using Agents.md for Quality** - Create a document with standarts to align AI output with team practices
 - **Planning Mode as a Default Habit** - Generate implementation plans for heavy tasks before coding
 
-⭐⭐⭐ **Complex tasks:**
+**Complex tasks:**
 - **Multi-Phase Implementation** - Break large refactors into phases
 - **Rapid Prototyping** - Generate proof-of-concept code quickly but iteratively
 
