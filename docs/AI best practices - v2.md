@@ -15,7 +15,7 @@
 
 ⭐⭐ **Mid-Size Features:**
 - **Writing Tests** - Generate test coverage for unit, integration, and edge-case scenarios
-- **Using Agents.md for Quality** - Create a living standards document to align AI output with team practices
+- **Using Agents.md for Quality** - Create a document with standarts to align AI output with team practices
 - **Planning Mode as a Default Habit** - Generate implementation plans for heavy tasks before coding
 
 ⭐⭐⭐ **Complex tasks:**
@@ -63,11 +63,11 @@ Use this as an interactive documentation tool. Consider maintaining a personal `
 
 ### PR Review Assistance
 
-In GitHub, activate Copilot on any pull request:
+In GitHub, activate Copilot on a pull request:
 
 > *"Summarize these changes and identify potential bugs or missing test coverage."*
 
-While not a substitute for human review, it consistently catches obvious issues—such as unhandled null cases or missing error handling—that can slip through when reviewing at 4 PM on a Friday. 
+While not a substitute for human review, it consistently catches obvious issues—such as unhandled null cases or missing error handling. 
 
 ### Accelerating QA Workflows
 
@@ -125,7 +125,7 @@ Stop writing "upd" or "small change" as commit messages. Let Copilot analyze you
 
 > *"Create a PR description summarizing the changes in this branch."*
 
-The AI will review your diff and produce descriptive, professional text that explains what changed and why—making your git history actually useful for future reference. This is especially valuable when you've made multiple related changes and need to articulate the overall impact clearly.
+The AI will review your diff and produce descriptive, professional text that explains what changed and why—making your git history actually useful for future reference. This is especially valuable when you've made multiple related changes and need to articulate the overall impact clearly. Also, you can generate PR summary in GitHub.com by clicking on `Copilot Summary` button.
 
 ### ⭐⭐ **2-Star: Feature Implementation**
 
@@ -196,7 +196,7 @@ Here's an example for a C# project:
 The beauty is that modern agents automatically consider this file when generating code—you don't need to explicitly reference it in every prompt. Just keep it current, and the quality improvements happen automatically.
 
 ### Planning as a Default Habit  
-For non-trivial work, planning is not optional—it's the foundation of success. Instead of asking for immediate implementation switch to `Plan` mode in Copilot and ask something like this:
+For non-trivial work, planning is not optional—it's required. Instead of asking for immediate implementation switch to `Plan` mode in Copilot and ask something like this:
 
 > *"Create a plan for adding rate limiting to the GraphQL endpoint. Store it in plans/rate-limit.md."*
 
@@ -252,14 +252,195 @@ Review and validate each step before proceeding. Without disciplined oversight, 
 For large-scale refactors, architectural overhauls, or spec-driven greenfield projects, Copilot's context window (~128k tokens) becomes restrictive. If you find yourself hitting these limits and feel confident exploring more advanced tools, you might consider:
 
 - **Claude Code** (CLI, Web): Larger context window, excels at repository-wide reasoning and architecture.
-- **Cline** (VS Code extension): Large context capacity, can be ocnfigured to rely on VS Code Copilot extension. Excellent for heavy tasks but burns tokens insanely fast.
+- **Cline** (VS Code extension): Large context capacity, can be configured to rely on VS Code Copilot extension. Excellent for heavy tasks but burns tokens insanely fast.
 - **Speckit** (prompt engineering framework): A structured prompt library that runs within Copilot, designed for heavy spec-driven development without leaving your IDE.
+
 
 
 ---
 
-## **Most importantly: share your feedback!**
+## When NOT to Use AI
+
+Before diving in, know when to step back. AI assistants are not suitable for:
+
+- **Guessing business requirements** — If you don't know what to build, the AI won't either. Clarify requirements with stakeholders first.
+- **Security-critical code without review** — Never blindly trust AI-generated authentication, encryption, or authorization logic. Always have a human expert verify.
+- **Code you don't understand** — If you can't explain what the generated code does, don't commit it. You own it now.
+- **Replacing architectural thinking** — AI can implement patterns, but choosing the right architecture for your context requires human judgment.
+
+---
+
+## Evaluation Tasks for Your Team
+
+During the pilot period, try using Copilot for your regular work. The goal is to get a feel for where it helps and where it doesn't — not to force specific exercises.
+
+**Suggested approach:**
+
+For a fair comparison, you may try this experiment: when you have a small task (a bug fix, a new method), implement it yourself first, then try the same task with Copilot. Compare the results — time spent, code quality, and how much you had to fix.
+
+**Types of tasks we would like you to try:**
+
+**⭐ Small tasks (do 10 of these or more):**
+- Fix a small bug or make a minor code change
+- Add a property, new validation, or simple feature to existing code
+- Ask Copilot to explain unfamiliar code
+- Generate commit messages or PR descriptions
+
+**⭐⭐ Mid-Size Tasks (do 5 of these or more):**
+- Write tests for existing functionality
+- Create or update an `Agents.md` for your project
+- Use Planning mode before implementing something
+- Refactor a method or small module
+
+**⭐⭐⭐ Major Tasks (do 2 of these or more):**
+- Implement a feature end-to-end with plan-then-implement workflow
+- Build a proof-of-concept for a new app/module
+- Migrate legacy code to a newer framework
+
+**How to track:** Keep brief notes — what worked, what didn't, time spent vs. your estimate without AI.
+
+---
+
+## **Most importantly: share your feedback!** 
 
  Take a moment to reflect. What did you actually like about working with Copilot or other agents? What frustrated you or felt like struggling against a wall? Did it genuinely help, or did it create more work than it saved?
 
 Share your honest thoughts with us. What worked brilliantly for you might become someone else's go-to pattern.This is a learning process for all of us, and your real experience matters more than any theoretical guide.
+After completing your evaluation tasks, please answer these questions honestly. Your feedback shapes how we adopt these tools.
+
+---
+
+## Post-Evaluation Survey Questions
+
+### General Experience
+
+**1. How often did you use Copilot during the evaluation period?**
+- Never
+- A few times total
+- A few times per week
+- Once a day
+- Several times per day
+- Almost constantly when coding
+
+**2. On a scale of 1-5, how useful was GitHub Copilot for your daily work?**
+- 1 (Not useful, often got in the way)
+- 2 (Occasionally helpful)
+- 3 (Useful for specific tasks)
+- 4 (Very useful, improved my workflow)
+- 5 (Game-changer, can't imagine working without it)
+
+**3. Did using Copilot affect your speed?**
+- Made me significantly faster
+- Made me somewhat faster
+- About the same
+- Made me somewhat slower
+- Made me significantly slower
+- Depends on the task (please specify in notes)
+
+**4. What was the single most valuable thing Copilot helped you with?**
+- Autocomplete / writing boilerplate
+- Fixing bugs
+- Writing new features
+- Understanding unfamiliar code
+- Writing tests
+- Generating documentation / commit messages
+- Other (please specify)
+
+**5. What was your biggest frustration?** (pick one + explain in notes)
+- AI didn't understand our patterns
+- AI lacked context (couldn't "see" related files, database schema, etc.)
+- AI was too generic (felt like Stack Overflow copy-paste, not our solution)
+- AI created more work (generated code I had to rewrite from scratch)
+- No major frustrations
+
+
+### Specific Use Cases
+**6. Describe one situation where Copilot clearly helped you** (saved time, effort, or thinking).
+- (Open text)
+
+**7. Describe one situation where Copilot clearly failed or caused more work.**
+- (Open text)
+
+**8. Which use cases worked best for you?** (select all that apply)
+- Bug fixes and small changes
+- Refactoring
+- Planning features before implementation
+- Autocomplete
+- Code explanation / understanding
+- Writing tests
+- Generating commit messages / PR descriptions
+- None worked well
+
+**9. Which use cases felt like more trouble than they were worth?** (select all that apply)
+- Bug fixes and small changes
+- Refactoring
+- Planning features before implementation
+- Autocomplete
+- Code explanation / understanding
+- Writing tests
+- Generating commit messages / PR descriptions
+- All worked fine for me
+
+**10. Did you create or use an Agents.md file?**
+- Yes, and it clearly improved output quality (e.g., AI stopped suggesting obsolete patterns)
+- Yes, but I couldn't tell if it helped (maybe copied our style guide, but AI still made mistakes)
+- No, I didn't have time to create one
+- No, I tried but wasn't sure what to put in it
+
+**11. Did you use Planning mode for larger tasks?**
+- Used it for a 2+ hour task: It caught issues early and saved time overall
+- Used it: It felt like extra paperwork, didn't help
+- Didn't use: I tried but the plan was generic/useless
+- Didn't use: I didn't have any tasks big enough to need planning
+
+### Comparison & Alternatives
+
+**12. Have you tried any other AI coding tools?** (select all that apply)
+- Claude Code
+- Cursor
+- Codex
+- Other (please specify)
+- No, only GitHub Copilot
+
+**13. If you tried alternatives, how did they compare to Copilot?**
+- Copilot was better overall
+- Copilot was worse overall
+- About the same
+- Different tools work better for different tasks
+- N/A — didn't try alternatives
+
+**14. Would you prefer a different tool for certain tasks?**
+- No, Copilot covers everything I need
+- Yes (please explain for which kinds of tasks)
+- Not sure yet
+
+### Moving Forward
+
+**15. Any concerns about AI-assisted development?** (select all that apply)
+- Code quality might decrease
+- Team becoming over-reliant on AI
+- Less learning / skill development
+- Harder to review AI-generated code
+- Security vulnerabilities in generated code
+- No concerns
+- Other (please specify)
+
+**16. What would you prefer to do next?**
+- Continue with GitHub Copilot as-is
+- Continue with Copilot + add training/guidelines
+- Try alternative tools
+- Switch to a different tool entirely
+- Abandon AI tools for now
+- Need more evaluation time
+
+**17. What would help you use AI tools more effectively?** (select all that apply)
+- More hands-on training sessions
+- Better documentation / guidelines
+- Pair programming sessions with experienced users
+- Example prompts and workflows
+- Time dedicated specifically for learning
+- Nothing needed, I'm comfortable
+- Other (please specify)
+
+**18. Anything else you want to share?**
+- (Open text field)
