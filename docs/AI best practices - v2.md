@@ -6,8 +6,6 @@
 - **PR Review Assistance** - Identify potential bugs, missing test coverage, and security vulnerabilities in pull requests
 - **Accelerating QA Workflows** - Query API specifications, generate test scenarios, and understand implementation details
 
-**Code Generation** (Increasing complexity):
-
 **Quick Wins:**
 - **Daily Autocomplete** - Write descriptive comments and let Copilot generate implementations
 - **Targeted Bug Fixes** - Make surgical code changes with minimal impact to surrounding logic
