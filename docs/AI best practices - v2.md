@@ -13,8 +13,8 @@
 
 **Mid-Size Features:**
 - **Writing Tests** - Generate test coverage for unit, integration, and edge-case scenarios
-- **Using Agents.md for Quality** - Create a document with standarts to align AI output with team practices
-- **Planning Mode as a Default Habit** - Generate implementation plans for heavy tasks before coding
+- **Using Agents.md** - Create a document with standarts to align AI output with team practices
+- **Planning Mode** - Generate implementation plans for heavy tasks before coding
 
 **Complex tasks:**
 - **Multi-Phase Implementation** - Break large refactors into phases
