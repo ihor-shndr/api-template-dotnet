@@ -286,7 +286,7 @@ For a fair comparison, you may try this experiment: when you have a small task (
 
 **⭐⭐ Mid-Size Tasks (do 5 of these or more):**
 - Write tests for existing functionality
-- Create or update an `Agents.md` for your project
+- Create and use `Agents.md` for your project
 - Use Planning mode before implementing something
 - Refactor a method or small module
 
