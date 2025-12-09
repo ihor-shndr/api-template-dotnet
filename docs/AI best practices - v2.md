@@ -59,6 +59,15 @@ You'll quickly receive a coherent overview—like having a patient colleague who
 
 Use this as an interactive documentation tool. Consider maintaining a personal `ONBOARDING.md` file where you capture these explanations for future reference.
 
+### Generating Commit Messages and PR Descriptions  
+Stop writing "upd" or "small change" as commit messages. Let Copilot analyze your changes and generate meaningful descriptions. Most IDEs have a built-in sparkle icon (✨) in the source control panel that generates commit messages with one click. Alternatively, ask in chat:
+
+> *"Generate a commit message for my staged changes."*
+
+> *"Create a PR description summarizing the changes in this branch."*
+
+The AI will review your diff and produce descriptive, professional text that explains what changed and why—making your git history actually useful for future reference. This is especially valuable when you've made multiple related changes and need to articulate the overall impact clearly. Also, you can generate PR summary in GitHub.com by clicking on `Copilot Summary` button.
+
 ### PR Review Assistance
 
 In GitHub, activate Copilot on a pull request:
@@ -116,14 +125,6 @@ These surgical changes are Copilot's sweet spot. The more context you provide ab
 
 **A pragmatic note:** If you find yourself repeatedly rejecting suggestions and fighting with the AI over a simple change, it's often faster to just write it yourself. Where AI truly shines is on work that would take you hours or even days—complex implementations, boilerplate-heavy features, or exploratory coding where you're not entirely sure of the approach yet. Don't spend five minutes getting AI to generate a two-line change you could write in thirty seconds.
 
-### Generating Commit Messages and PR Descriptions  
-Stop writing "upd" or "small change" as commit messages. Let Copilot analyze your changes and generate meaningful descriptions. Most IDEs have a built-in sparkle icon (✨) in the source control panel that generates commit messages with one click. Alternatively, ask in chat:
-
-> *"Generate a commit message for my staged changes."*
-
-> *"Create a PR description summarizing the changes in this branch."*
-
-The AI will review your diff and produce descriptive, professional text that explains what changed and why—making your git history actually useful for future reference. This is especially valuable when you've made multiple related changes and need to articulate the overall impact clearly. Also, you can generate PR summary in GitHub.com by clicking on `Copilot Summary` button.
 
 ### ⭐⭐ **2-Star: Feature Implementation**
 
