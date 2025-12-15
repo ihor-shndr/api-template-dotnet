@@ -68,13 +68,16 @@ Stop writing "upd" or "small change" as commit messages. Let Copilot analyze you
 
 The AI will review your diff and produce descriptive, professional text that explains what changed and why—making your git history actually useful for future reference. This is especially valuable when you've made multiple related changes and need to articulate the overall impact clearly. Also, you can generate PR summary in GitHub.com by clicking on `Copilot Summary` button.
 
+**Tip:** Alternitvely, you can configure custom instructions for commit message generation in your IDE. Here's the guide for [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions#_specify-custom-instructions-in-settings)
+
 ### PR Review Assistance
 
-In GitHub, activate Copilot on a pull request:
-
-> *"Summarize these changes and identify potential bugs or missing test coverage."*
-
+In GitHub, activate Copilot on a pull request by selecting `Copilot` in the reviewers list.
 While not a substitute for human review, it consistently catches obvious issues—such as unhandled null cases or missing error handling. 
+
+**Tip:** Similarly to the custom commit instructions, you can provide instruction for codereviews in [.github/copilot-instructions.md](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/request-a-code-review/use-code-review?tool=webui#customizing-copilots-reviews-with-custom-instructions)
+
+
 
 ### Accelerating QA Workflows
 
