@@ -21,7 +21,7 @@
 - **Rapid Prototyping** - Generate proof-of-concept code quickly but iteratively
 
 ---
-# Working with Copilot: A Practical Guide for Your Team by Empeek
+# Working with Copilot: A Practical Guide for Your Team
 
 
 We all know what an LLM is at its core—a sophisticated next-token prediction engine that's fundamentally non-deterministic. This means AI coding assistants work differently than traditional tools you might be used to. Think of Copilot as a highly capable junior engineer who has read millions of codebases and responds instantly, bringing that vast knowledge to every interaction. However, like any junior developer, it has limitations worth understanding upfront.
