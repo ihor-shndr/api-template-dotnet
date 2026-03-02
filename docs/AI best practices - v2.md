@@ -21,6 +21,7 @@
 - **Rapid Prototyping** - Generate proof-of-concept code quickly but iteratively
 
 ---
+
 # Working with Copilot: A Practical Guide for Your Team
 
 
