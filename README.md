@@ -1,55 +1,148 @@
-# Books API Project Brief
+# Books API — Multi-Agent AI Demo
 
-  ## Project Overview
+A **.NET 8 Clean Architecture** REST API template with a **multi-agent AI setup** baked in. The app itself is intentionally minimal (one domain, one endpoint) so you can focus on how the agents work together rather than business logic.
 
-  This is a .NET-based Books API template project implementing a clean
-  architecture pattern for book management. The project serves as a
-  foundation for building book-related applications with RESTful API
-  endpoints.
+## Prerequisites
 
-  ## Architecture & Structure
+**AI tools** (pick one or both):
 
-  Clean Architecture Implementation
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) (CLI or VS Code extension) — Anthropic's coding agent
+- [GitHub Copilot](https://github.com/features/copilot) (VS Code / JetBrains) — GitHub's AI coding assistant
 
-  - Books.API: Web API layer with controllers and HTTP endpoints
-  - Books.Domain: Business logic, models, services, and interfaces
-  - Books.Data: Data access layer with DAOs and entities
-  - Books.Common: Shared utilities and cross-cutting concerns
-  - Books.UnitTests: Unit testing project
+Both tools read agent definitions from `.agents/`. Claude Code uses a `.claude/` symlink; Copilot picks up agents natively from `.agents/`.
 
-  Key Design Patterns
+**Key concepts you'll see here:**
 
-  - Dependency Injection: Modular service registration via extension methods
-  - Repository Pattern: Data access abstraction through IBookDao interface
-  - Result Pattern: Custom TryResult implementation for error handling
-  - Service Layer: Business logic encapsulation in dedicated service classes
-  - Mapper Pattern: DTO-to-domain model conversion
+- **Agent** — an AI sub-process with a focused role, its own system prompt, and constraints on what it can/cannot do. Defined in `.agents/agents/*.agent.md`.
+- **Skill** — a reusable slash command (like `/run-locally`) that triggers a predefined workflow. Defined in `.agents/skills/*/SKILL.md`.
+- **MCP (Model Context Protocol)** — a standard that lets AI tools call external services (GitHub, Jira, browsers, etc.) via plugins. The `coordinator` uses GitHub MCP to create draft PRs. The `manual-qa` agent can use browser MCP to test the UI.
+- **AGENTS.md** — a shared context file that all AI tools load automatically. Contains architecture rules, naming conventions, and patterns the agents must follow.
 
-  ## Technical Implementation
+**To run the app:** [Docker](https://www.docker.com/) and Docker Compose.
 
-  Error Handling Approach
+## Why multi-agent?
 
-  - Custom TryResult<T> monad-style pattern for functional error handling
-  - Structured error codes via dedicated ErrorCodes classes
-  - Centralized error response handling in base controller
-  - Implicit conversion operators for seamless error propagation
+A single AI chat can write code, but it tries to do everything at once — plan, implement, review, test. That leads to shortcuts and missed issues. Multi-agent splits these responsibilities the same way a real team does:
 
-  Layered Architecture
+| Role | Human team | AI agent |
+|------|-----------|----------|
+| Tech lead | Plans the approach, delegates, reviews scope | `coordinator` |
+| Developer | Writes code and tests | `implement` |
+| Code reviewer | Catches bugs, checks standards | `code-review` |
+| QA engineer | Verifies fixes in a running app | `manual-qa` |
 
-  - Controllers delegate to domain services
-  - Services coordinate business logic and data access
-  - DAOs handle data persistence concerns
-  - Mappers transform between API contracts and domain models
+Each agent has **one job**, a **focused prompt**, and **clear boundaries** (e.g. the reviewer cannot edit files, the implementer cannot commit). This separation prevents the "do everything" drift you get with a single prompt.
 
-  Dependency Management
+## How it works
 
-  - Module-based service registration using extension methods
-  - Interface segregation with dedicated abstractions per layer
-  - Transient lifetime for stateless services
+```
+You: "Add a GET /api/books endpoint with a feature flag"
+ |
+ v
++--------------+
+| Coordinator  |  1. Reads codebase, creates a plan, asks for your OK
++--------------+
+ |
+ v
++--------------+
+| Implement    |  2. Writes tests first, then code. Runs dotnet test & format
++--------------+
+ |
+ v
++--------------+
+| Code Review  |  3. Checks against AGENTS.md rules
++--------------+
+ |
+ |-- NEEDS_REVISION --> back to Implement (max 2 rounds)
+ |
+ |-- APPROVED
+ v (optional, for bug fixes)
++--------------+
+| Manual QA    |  4. Hits the running API with curl/browser to verify
++--------------+
+ |
+ v
++--------------+
+| Coordinator  |  5. Commits + creates draft PR + tags @codex
++--------------+
+```
 
-  Technology Stack
+The coordinator never writes code. The implementer never commits. The reviewer never edits files. These constraints are what make the system reliable.
 
-  - .NET Core with minimal API configuration
-  - ASP.NET Core controllers with attribute routing
-  - Docker with health checks and environment configuration
-  - Swagger/OpenAPI for API documentation
+## Project structure
+
+```
+.agents/
+  agents/
+    coordinator.agent.md   ← orchestrator (the only one you invoke directly)
+    implement.agent.md     ← writes code and tests
+    code-review.agent.md   ← reviews against AGENTS.md rules
+    manual-qa.agent.md     ← tests the running app
+  skills/
+    run-locally/           ← /run-locally — start/stop the API via Docker
+    docs-drift/            ← /docs-drift — check if docs match recent commits
+  settings.local.json      ← tool permissions
+
+AGENTS.md                  ← shared codebase context (architecture, conventions, patterns)
+CLAUDE.md                  ← imports AGENTS.md for Claude Code
+```
+
+### What goes where
+
+| File | Purpose | Who reads it |
+|------|---------|-------------|
+| `AGENTS.md` | Architecture rules, naming conventions, error patterns, what to avoid | All agents + Copilot |
+| `*.agent.md` | Single agent's role, workflow steps, output format, constraints | That specific agent |
+| `SKILL.md` | Reusable slash command (like a script with AI reasoning) | The tool running it |
+
+## MCP servers
+
+Agents can call external services via [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) servers:
+
+| MCP Server | Used by | Purpose |
+|------------|---------|---------|
+| GitHub | `coordinator` | Create draft PRs, add comments, tag reviewers |
+| Browser / Preview | `manual-qa` | Interact with UI for browser-level testing |
+
+MCP servers are configured per-tool (in Claude Code settings or Copilot config) — not in this repo. The agent prompts reference them, but you wire the actual connections in your tool's settings.
+
+## Shared config across tools
+
+All AI configuration lives in `.agents/` and is shared via symlinks:
+
+```
+.claude/ → .agents/    (Claude Code)
+```
+
+Copilot reads `.agents/` directly — no symlink needed. This means the same agents, skills, and rules work across tools without duplication.
+
+## Running the app
+
+```bash
+docker-compose up --build
+```
+
+API at `http://localhost:8080`. Health check: `GET /api/health`.
+
+## The app itself
+
+A standard Clean Architecture .NET 8 API — four layers, strict dependency direction:
+
+```
+Books.API       → HTTP: controllers, contracts (DTOs), mappers
+Books.Domain    → Business logic: services, interfaces, models
+Books.Data      → Data access: repositories, entities, seed data
+Books.Common    → Shared primitives: TryResult error monad
+```
+
+Full conventions and patterns are documented in [`AGENTS.md`](./AGENTS.md).
+
+## Try it
+
+1. Open the project in VS Code or a terminal with Claude Code / Copilot
+2. Invoke the `coordinator` agent with a task, e.g.:
+   - *"Add a GET /api/books endpoint that returns all books, guarded by a .NET feature flag `EnableBooksList` using Microsoft.FeatureManagement"*
+   - *"Add a GET endpoint that returns a book by ID"*
+3. Watch it plan → implement → review → commit without you writing code
+
+The agents are simple markdown files. Read them, tweak them, break them — that's the point of a demo project.

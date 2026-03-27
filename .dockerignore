@@ -1,0 +1,11 @@
+.git
+.gitignore
+.DS_Store
+
+**/bin/
+**/obj/
+
+tests/
+docs/
+
+*.local.json
