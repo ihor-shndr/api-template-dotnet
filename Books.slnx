@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="docker-compose.yml" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Books.API/Books.API.csproj" />
+    <Project Path="src/Books.Common/Books.Common.csproj" />
+    <Project Path="src/Books.Data/Books.Data.csproj" />
+    <Project Path="src/Books.Domain/Books.Domain.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Books.UnitTests/Books.UnitTests.csproj" />
+  </Folder>
+</Solution>
