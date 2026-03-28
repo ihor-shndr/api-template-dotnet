@@ -18,7 +18,10 @@ Both tools read agent definitions from `.agents/`. Claude Code uses a `.claude/`
 - 🔌 **MCP (Model Context Protocol)** — a standard that lets AI tools call external services (GitHub, Jira, browsers, etc.) via plugins. The `coordinator` uses GitHub MCP to create draft PRs. The `manual-qa` agent can use browser MCP to test the UI.
 - 📖 **AGENTS.md** — a shared context file that all AI tools load automatically. Contains architecture rules, naming conventions, and patterns the agents must follow.
 
-**To run the app:** [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0).
+**Other tools:**
+
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) — to build and run the app
+- [GitHub CLI (`gh`)](https://cli.github.com/) — used by the `coordinator` for draft PRs and `/ci-explorer` for CI logs
 
 ## 🤔 Why multi-agent?
 
@@ -83,6 +86,7 @@ The coordinator never writes code. The implementer never commits. The reviewer n
   skills/
     run-locally/           ← ⚡ /run-locally — start the API via dotnet run
     docs-drift/            ← ⚡ /docs-drift — check if docs match recent commits
+    ci-explorer/           ← ⚡ /ci-explorer — debug failed GitHub Actions runs
   settings.local.json      ← 🔒 tool permissions
 
 AGENTS.md                  ← 📖 shared codebase context (architecture, conventions, patterns)

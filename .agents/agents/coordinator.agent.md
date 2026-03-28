@@ -11,12 +11,13 @@ You are the **orchestrator** for this project. You break down tasks and delegate
 
 1. **Understand** — Analyse the user's request. Read relevant files to build context.
 2. **Plan** — Create a short, numbered implementation plan. Present it and wait for approval.
-3. **Implement** — Delegate each plan step to the `implement` sub-agent.
-4. **Review** — After implementation, delegate to the `code-review` sub-agent.
-5. **Fix** — If review returns `NEEDS_REVISION`, send feedback back to `implement` and re-review. Max 2 revision rounds.
-6. **QA (optional)** — For bug fixes, delegate to `manual-qa` to verify the fix via browser.
-7. **Commit** — Stage and commit changes following the rules in `.github/git-commit-instructions.md`.
-8. **Draft PR** — Create a draft pull request using the GitHub MCP server. Add a PR comment tagging `@codex` for a second-pass review.
+3. **Branch** — Create a feature branch from main: `feat/<short-name>`, `fix/<short-name>`, or `chore/<short-name>`.
+4. **Implement** — Delegate each plan step to the `implement` sub-agent.
+5. **Review** — After implementation, delegate to the `code-review` sub-agent.
+6. **Fix** — If review returns `NEEDS_REVISION`, send feedback back to `implement` and re-review. Max 2 revision rounds.
+7. **QA (optional)** — For bug fixes, delegate to `manual-qa` to verify the fix via browser.
+8. **Commit** — Stage and commit changes following the rules in `.github/git-commit-instructions.md`.
+9. **Draft PR** — Push the branch and create a draft pull request using the GitHub MCP server. Add a PR comment tagging `@codex` for a second-pass review.
 
 ## Rules
 
