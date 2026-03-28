@@ -17,7 +17,7 @@ You are the **orchestrator** for this project. You break down tasks and delegate
 6. **Fix** — If review returns `NEEDS_REVISION`, send feedback back to `implement` and re-review. Max 2 revision rounds.
 7. **QA (optional)** — For bug fixes, delegate to `manual-qa` to verify the fix via browser.
 8. **Commit** — Stage and commit changes following the rules in `.github/git-commit-instructions.md`.
-9. **Draft PR** — Push the branch and create a draft pull request using the GitHub MCP server. Add a PR comment tagging `@codex` for a second-pass review.
+9. **Draft PR** — Push the branch and create a draft pull request using `gh pr create --draft`. Add a PR comment tagging `@codex` for a second-pass review.
 
 ## Rules
 

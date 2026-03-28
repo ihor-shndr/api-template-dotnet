@@ -15,7 +15,7 @@ Both tools read agent definitions from `.agents/`. Claude Code uses a `.claude/`
 
 - 🤖 **Agent** — an AI sub-process with a focused role, its own system prompt, and constraints on what it can/cannot do. Defined in `.agents/agents/*.agent.md`.
 - ⚡ **Skill** — a reusable slash command (like `/run-locally`) that triggers a predefined workflow. Defined in `.agents/skills/*/SKILL.md`.
-- 🔌 **MCP (Model Context Protocol)** — a standard that lets AI tools call external services (GitHub, Jira, browsers, etc.) via plugins. The `coordinator` uses GitHub MCP to create draft PRs. The `manual-qa` agent can use browser MCP to test the UI.
+- 🔌 **MCP (Model Context Protocol)** — a standard that lets AI tools call external services (browsers, GitHub, Jira, etc.) via plugins. The `manual-qa` agent uses Playwright MCP for browser testing. The `coordinator` uses `gh` CLI for PRs.
 - 📖 **AGENTS.md** — a shared context file that all AI tools load automatically. Contains architecture rules, naming conventions, and patterns the agents must follow.
 
 **Other tools:**
@@ -90,8 +90,8 @@ The coordinator never writes code. The implementer never commits. The reviewer n
     ci-explorer/           ← ⚡ /ci-explorer — debug failed GitHub Actions runs
   settings.local.json      ← 🔒 tool permissions
 
-.mcp.json                  ← 🔌 MCP servers for Claude Code
-.vscode/mcp.json           ← 🔌 MCP servers for GitHub Copilot
+.mcp.json                  ← 🔌 MCP servers for Claude Code (Playwright)
+.vscode/mcp.json           ← 🔌 MCP servers for GitHub Copilot (Playwright)
 .github/git-commit-instructions.md ← 📝 commit message rules (Conventional Commits)
 
 AGENTS.md                  ← 📖 shared codebase context (architecture, conventions, patterns)
@@ -112,21 +112,16 @@ Agents can call external services via [MCP (Model Context Protocol)](https://mod
 
 | MCP Server | Used by | Purpose |
 |------------|---------|---------|
-| GitHub | `coordinator` | Create draft PRs, add comments, tag reviewers |
 | Playwright | `manual-qa`, any agent | Browser automation, UI testing, page snapshots |
 
-MCP configs are included in the repo and ready to use:
+MCP configs are included in the repo:
 
-| File | Tool | Notes |
-|------|------|-------|
-| `.mcp.json` | Claude Code | Set `GITHUB_PERSONAL_ACCESS_TOKEN` env var (remote API, no Docker) |
-| `.vscode/mcp.json` | GitHub Copilot | GitHub MCP uses Copilot OAuth (auto), no token needed |
+| File | Tool | What's configured |
+|------|------|-------------------|
+| `.mcp.json` | Claude Code | Playwright |
+| `.vscode/mcp.json` | GitHub Copilot | Playwright |
 
-Both files configure:
-- **GitHub** — for creating draft PRs and comments (`coordinator`)
-- **Playwright** — for browser-level testing (`manual-qa`)
-
-The agents will work without MCP — the `coordinator` will just skip PR creation and the `manual-qa` agent will fall back to `curl`.
+The `coordinator` uses `gh` CLI for draft PRs (no MCP needed). The `manual-qa` agent will fall back to `curl` if Playwright is not available.
 
 ## 🔗 Shared config across tools
 
