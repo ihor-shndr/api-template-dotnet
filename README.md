@@ -145,10 +145,35 @@ Full conventions and patterns are documented in [`AGENTS.md`](./AGENTS.md).
 
 ## 🎮 Try it
 
-1. Open the project in VS Code or a terminal with Claude Code / Copilot
-2. Invoke the `coordinator` agent with a task, e.g.:
-   - *"Add a GET /api/books endpoint that returns all books, guarded by a .NET feature flag `EnableBooksList` using Microsoft.FeatureManagement"*
-   - *"Add a GET endpoint that returns a book by ID"*
-3. Watch it plan → implement → review → commit without you writing code
+### Claude Code (CLI or VS Code)
+
+`CLAUDE.md` tells Claude to route all implementation tasks through the `coordinator` automatically. Just describe what you want:
+
+```
+> Add a GET /api/books endpoint that returns all books, guarded by a .NET feature flag EnableBooksList using Microsoft.FeatureManagement
+```
+
+Claude will pick up the `coordinator` agent, which will plan → branch → implement → review → commit → draft PR — without you invoking anything manually.
+
+### GitHub Copilot
+
+In Copilot Chat, select the `coordinator` agent from the dropdown, then type your request.
+
+### Example 1: Feature implementation
+
+Ask for a feature — the coordinator handles the full cycle:
+
+- *"Add a GET /api/books endpoint with a .NET feature flag `EnableBooksList`"*
+- *"Add a GET endpoint that returns a book by ID"*
+- *"The health check returns 500 when the DB is unreachable — fix it"*
+
+### Example 2: Debug a failed CI run
+
+Use the `/ci-explorer` skill to investigate GitHub Actions failures:
+
+- *"CI is red, what happened?"*
+- *"/ci-explorer"*
+
+It will fetch the failed run logs with `gh`, find the error, and suggest a fix.
 
 The agents are simple markdown files. Read them, tweak them, break them — that's the point of a demo project. 🛠️
