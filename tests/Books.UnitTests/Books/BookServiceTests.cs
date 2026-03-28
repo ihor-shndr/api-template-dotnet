@@ -32,7 +32,7 @@ public class BookServiceTests
             CreatedDate = DateTime.Now
         };
 
-        _mockBookDao.Setup(x => x.GetBookAsync(2))
+        _mockBookDao.Setup(x => x.GetBookAsync(bookId))
                    .ReturnsAsync(TryResult.Success(expectedBook));
 
         var result = await _bookService.GetBookAsync(bookId);
