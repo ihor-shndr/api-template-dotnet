@@ -242,13 +242,13 @@ One logical change per commit. Build and tests must pass before committing.
 
 ---
 
-## Docker & Local Development
+## Local Development
 
 ```bash
-docker-compose up --build    # Start the API (port 8080)
+dotnet run --project src/Books.API    # Start the API
 ```
 
-The health check endpoint is `GET /api/health`. The docker-compose file configures it automatically.
+The health check endpoint is `GET /api/health`.
 
 Environment variables follow the ASP.NET Core double-underscore convention for nested config:
 - `Database__ConnectionString` → `DatabaseConfig.ConnectionString`

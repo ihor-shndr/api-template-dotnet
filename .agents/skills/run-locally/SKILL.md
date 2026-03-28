@@ -1,20 +1,10 @@
 ---
 name: run-locally
-description: 'Start or stop the Books API locally with Docker Compose. Use when: starting the app, tearing down containers.'
-argument-hint: '[--down] to stop'
+description: 'Start the Books API locally with dotnet run.'
 ---
 
 # Run the App Locally
 
-## Usage
-```bash
-# Start
-.github/skills/run-locally/assets/run-local.sh
+Run `.agents/skills/run-locally/assets/run-local.sh` to start the API.
 
-# Stop
-.github/skills/run-locally/assets/run-local.sh --down
-```
-
-The script runs `docker compose up -d --wait` which waits for health checks to pass.
-
-Access the app at `http://localhost:8080`.
+App available at `http://localhost:5265`. Health check: `GET /api/health`.

@@ -9,7 +9,7 @@ You are the **QA tester**. You verify that bug fixes work by testing the running
 
 ## Workflow
 
-1. **Check app** — Hit `http://localhost:8080/api/health`. If the app is not running, use the `/run-locally` skill to start it.
+1. **Check app** — Hit `http://localhost:5265/api/health`. If the app is not running, use the `/run-locally` skill to start it.
 2. **Reproduce** — Follow the original bug reproduction steps to confirm the fix.
 3. **Verify** — Confirm the expected behaviour now works correctly.
 4. **Edge cases** — Test 1-2 related scenarios to check for regressions.
