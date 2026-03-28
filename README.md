@@ -21,7 +21,8 @@ Both tools read agent definitions from `.agents/`. Claude Code uses a `.claude/`
 **Other tools:**
 
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) — to build and run the app
-- [GitHub CLI (`gh`)](https://cli.github.com/) — used by the `coordinator` for draft PRs and `/ci-explorer` for CI logs
+- [Node.js](https://nodejs.org/) — Playwright MCP runs via npx
+- [GitHub CLI (`gh`)](https://cli.github.com/) — used by `/ci-explorer` for CI logs
 
 ## 🤔 Why multi-agent?
 
@@ -89,6 +90,10 @@ The coordinator never writes code. The implementer never commits. The reviewer n
     ci-explorer/           ← ⚡ /ci-explorer — debug failed GitHub Actions runs
   settings.local.json      ← 🔒 tool permissions
 
+.mcp.json                  ← 🔌 MCP servers for Claude Code
+.vscode/mcp.json           ← 🔌 MCP servers for GitHub Copilot
+.github/git-commit-instructions.md ← 📝 commit message rules (Conventional Commits)
+
 AGENTS.md                  ← 📖 shared codebase context (architecture, conventions, patterns)
 CLAUDE.md                  ← 📎 imports AGENTS.md for Claude Code
 ```
@@ -108,9 +113,20 @@ Agents can call external services via [MCP (Model Context Protocol)](https://mod
 | MCP Server | Used by | Purpose |
 |------------|---------|---------|
 | GitHub | `coordinator` | Create draft PRs, add comments, tag reviewers |
-| Browser / Preview | `manual-qa` | Interact with UI for browser-level testing |
+| Playwright | `manual-qa`, any agent | Browser automation, UI testing, page snapshots |
 
-MCP servers are configured per-tool (in Claude Code settings or Copilot config) — not in this repo. The agent prompts reference them, but you wire the actual connections in your tool's settings.
+MCP configs are included in the repo and ready to use:
+
+| File | Tool | Notes |
+|------|------|-------|
+| `.mcp.json` | Claude Code | Set `GITHUB_PERSONAL_ACCESS_TOKEN` env var (remote API, no Docker) |
+| `.vscode/mcp.json` | GitHub Copilot | GitHub MCP uses Copilot OAuth (auto), no token needed |
+
+Both files configure:
+- **GitHub** — for creating draft PRs and comments (`coordinator`)
+- **Playwright** — for browser-level testing (`manual-qa`)
+
+The agents will work without MCP — the `coordinator` will just skip PR creation and the `manual-qa` agent will fall back to `curl`.
 
 ## 🔗 Shared config across tools
 
@@ -129,19 +145,6 @@ dotnet run --project src/Books.API
 ```
 
 API at `http://localhost:5265`. Health check: `GET /api/health`.
-
-## 🏗️ The app itself
-
-A standard Clean Architecture .NET 8 API — four layers, strict dependency direction:
-
-```
-Books.API       → HTTP: controllers, contracts (DTOs), mappers
-Books.Domain    → Business logic: services, interfaces, models
-Books.Data      → Data access: repositories, entities, seed data
-Books.Common    → Shared primitives: TryResult error monad
-```
-
-Full conventions and patterns are documented in [`AGENTS.md`](./AGENTS.md).
 
 ## 🎮 Try it
 

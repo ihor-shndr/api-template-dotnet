@@ -17,7 +17,7 @@ Review recent changes and fix any documentation that has fallen out of sync.
    - Naming conventions
    - Error handling patterns
    - DI registration patterns
-   - Docker / local dev setup
+   - Local dev setup
    - Testing conventions
    - Available skills or agents
 4. **Update** — Edit only the sections that are wrong or missing. Do not rewrite sections that are still accurate.

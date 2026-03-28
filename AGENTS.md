@@ -220,25 +220,7 @@ Follow this checklist in order:
 
 ## Commit Conventions
 
-This project uses [Conventional Commits](https://www.conventionalcommits.org/):
-
-```
-<type>(<scope>): <short description>
-```
-
-**Types:** `feat`, `fix`, `refactor`, `perf`, `test`, `docs`, `build`, `ci`, `chore`, `revert`
-
-**Scope:** the domain or layer affected (e.g., `books`, `api`, `data`, `common`)
-
-**Examples:**
-```
-feat(books): add create book endpoint
-fix(books): return 404 when book id is negative
-refactor(data): extract seed data to BookSeedData class
-test(books): add negative test case for missing book
-```
-
-One logical change per commit. Build and tests must pass before committing.
+See `.github/git-commit-instructions.md` for the full commit message rules. In short: [Conventional Commits](https://www.conventionalcommits.org/) format, imperative mood, one logical change per commit. Build and tests must pass before committing.
 
 ---
 
