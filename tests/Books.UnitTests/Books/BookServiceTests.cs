@@ -97,4 +97,51 @@ public class BookServiceTests
             Assert.That(result.Value.CreatedDate, Is.EqualTo(createdDate));
         });
     }
+
+    [Test]
+    public async Task GetBooksAsync_WhenBooksExist_ReturnsList()
+    {
+        IReadOnlyList<Book> expectedBooks =
+        [
+            new Book { Title = "Book One", Author = "Author One", CreatedDate = DateTime.UtcNow },
+            new Book { Title = "Book Two", Author = "Author Two", CreatedDate = DateTime.UtcNow }
+        ];
+
+        _mockBookDao.Setup(x => x.GetBooksAsync())
+                   .ReturnsAsync(TryResult.Success(expectedBooks));
+
+        var result = await _bookService.GetBooksAsync();
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.IsSuccess, Is.True);
+            Assert.That(result.Value, Has.Count.EqualTo(2));
+        });
+    }
+
+    [Test]
+    public async Task GetBooksAsync_WhenDaoFails_ReturnsError()
+    {
+        var error = new Error(BookErrorCodes.BookNotFound, "Books not found");
+
+        _mockBookDao.Setup(x => x.GetBooksAsync())
+                   .ReturnsAsync((TryResult<IReadOnlyList<Book>>)error);
+
+        var result = await _bookService.GetBooksAsync();
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.IsSuccess, Is.False);
+            Assert.That(result.Error!.Code, Is.EqualTo(BookErrorCodes.BookNotFound));
+        });
+
+        _mockLogger.Verify(
+            x => x.Log(
+                LogLevel.Error,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((v, t) => true),
+                It.IsAny<Exception?>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
+            Times.Once);
+    }
 }

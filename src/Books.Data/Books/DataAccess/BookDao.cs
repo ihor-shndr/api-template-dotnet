@@ -20,4 +20,18 @@ public class BookDao : IBookDao
             CreatedDate = book.CreatedDate
         });
     }
+
+    public Task<TryResult<IReadOnlyList<Book>>> GetBooksAsync()
+    {
+        IReadOnlyList<Book> books = BookSeedData.Books
+            .Select(b => new Book
+            {
+                Title = b.Title,
+                Author = b.Author,
+                CreatedDate = b.CreatedDate
+            })
+            .ToList();
+
+        return Task.FromResult(TryResult.Success(books));
+    }
 }

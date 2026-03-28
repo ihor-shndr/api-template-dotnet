@@ -11,4 +11,7 @@ public class BookMapper : IBookMapper
             Title = book.Title,
             Author = book.Author
         };
+
+    public IReadOnlyList<BookContract> MapBooks(IReadOnlyList<Book> books) =>
+        books.Select(MapBook).ToList();
 }

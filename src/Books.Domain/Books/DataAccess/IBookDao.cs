@@ -6,4 +6,5 @@ namespace Books.Domain.Books.DataAccess;
 public interface IBookDao
 {
     Task<TryResult<Book>> GetBookAsync(int id);
+    Task<TryResult<IReadOnlyList<Book>>> GetBooksAsync();
 }
