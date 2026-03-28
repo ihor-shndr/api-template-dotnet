@@ -44,4 +44,57 @@ public class BookServiceTests
             Assert.That(result.Value.Author, Is.EqualTo(expectedBook.Author));
         });
     }
+
+    [Test]
+    public async Task GetBookAsync_WhenBookNotFound_ReturnsError()
+    {
+        var bookId = 99;
+        var error = new Error(BookErrorCodes.BookNotFound, "Book not found");
+
+        _mockBookDao.Setup(x => x.GetBookAsync(bookId))
+                   .ReturnsAsync((TryResult<Book>)error);
+
+        var result = await _bookService.GetBookAsync(bookId);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.IsSuccess, Is.False);
+            Assert.That(result.Error!.Code, Is.EqualTo(BookErrorCodes.BookNotFound));
+        });
+
+        _mockLogger.Verify(
+            x => x.Log(
+                LogLevel.Error,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((v, t) => true),
+                It.IsAny<Exception?>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
+            Times.Once);
+    }
+
+    [Test]
+    public async Task GetBookAsync_WhenBookExists_AllFieldsAreMapped()
+    {
+        var bookId = 2;
+        var createdDate = new DateTime(2024, 6, 15, 10, 30, 0);
+        var expectedBook = new Book
+        {
+            Title = "Clean Architecture",
+            Author = "Robert C. Martin",
+            CreatedDate = createdDate
+        };
+
+        _mockBookDao.Setup(x => x.GetBookAsync(bookId))
+                   .ReturnsAsync(TryResult.Success(expectedBook));
+
+        var result = await _bookService.GetBookAsync(bookId);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.IsSuccess, Is.True);
+            Assert.That(result.Value.Title, Is.EqualTo(expectedBook.Title));
+            Assert.That(result.Value.Author, Is.EqualTo(expectedBook.Author));
+            Assert.That(result.Value.CreatedDate, Is.EqualTo(createdDate));
+        });
+    }
 }

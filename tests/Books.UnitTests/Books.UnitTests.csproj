@@ -24,6 +24,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\Books.Domain\Books.Domain.csproj" />
+      <ProjectReference Include="..\..\src\Books.API\Books.API.csproj" />
     </ItemGroup>
 
 </Project>
