@@ -1,5 +1,5 @@
 ---
-name: code-review
+name: reviewer
 description: Review code changes for correctness, architecture compliance, and quality.
 ---
 

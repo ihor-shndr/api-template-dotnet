@@ -34,7 +34,7 @@ Sub-agents solve both problems. Each one runs in **its own context window** — 
 |------|-----------|----------|
 | 🧑‍💼 Tech lead | Plans the approach, delegates, reviews scope | `coordinator` |
 | 👨‍💻 Developer | Writes code and tests | `implement` |
-| 🔍 Code reviewer | Catches bugs, checks standards | `code-review` |
+| 🔍 Code reviewer | Catches bugs, checks standards | `reviewer` |
 | 🧪 QA engineer | Verifies fixes in a running app | `manual-qa` |
 
 Each agent has **one job**, a **focused prompt**, and **clear boundaries** (e.g. the reviewer cannot edit files, the implementer cannot commit). This separation prevents the "do everything" drift you get with a single prompt.
@@ -56,7 +56,7 @@ You: "Add a GET /api/books endpoint with a feature flag"
  |
  v
 +--------------+
-| Code Review  |  3. Checks against AGENTS.md rules
+| Reviewer     |  3. Checks against AGENTS.md rules
 +--------------+
  |
  |-- NEEDS_REVISION --> back to Implement (max 2 rounds)
@@ -82,7 +82,7 @@ The coordinator never writes code. The implementer never commits. The reviewer n
   agents/
     coordinator.agent.md   ← 🧑‍💼 orchestrator (the only one you invoke directly)
     implement.agent.md     ← 👨‍💻 writes code and tests
-    code-review.agent.md   ← 🔍 reviews against AGENTS.md rules
+    reviewer.agent.md      ← 🔍 reviews against AGENTS.md rules
     manual-qa.agent.md     ← 🧪 tests the running app
   skills/
     run-locally/           ← ⚡ /run-locally — start the API via dotnet run

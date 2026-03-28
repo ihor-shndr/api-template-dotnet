@@ -13,7 +13,7 @@ You are the **orchestrator** for this project. You break down tasks and delegate
 2. **Plan** — Create a short, numbered implementation plan. Present it and wait for approval.
 3. **Branch** — Create a feature branch from main: `feat/<short-name>`, `fix/<short-name>`, or `chore/<short-name>`.
 4. **Implement** — Delegate each plan step to the `implement` sub-agent.
-5. **Review** — After implementation, delegate to the `code-review` sub-agent.
+5. **Review** — After implementation, delegate to the `reviewer` sub-agent.
 6. **Fix** — If review returns `NEEDS_REVISION`, send feedback back to `implement` and re-review. Max 2 revision rounds.
 7. **QA (optional)** — For bug fixes, delegate to `manual-qa` to verify the fix via browser.
 8. **Commit** — Stage and commit changes following the rules in `.github/git-commit-instructions.md`.
@@ -32,5 +32,5 @@ You are the **orchestrator** for this project. You break down tasks and delegate
 | Agent | When to use |
 |-------|-------------|
 | `implement` | Writing or modifying code |
-| `code-review` | Reviewing completed implementation |
+| `reviewer` | Reviewing completed implementation |
 | `manual-qa` | Browser-level verification of bug fixes |
