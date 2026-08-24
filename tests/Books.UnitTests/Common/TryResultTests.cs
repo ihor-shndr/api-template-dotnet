@@ -4,54 +4,45 @@ namespace Books.UnitTests.Common;
 
 public class TryResultTests
 {
-    [Test]
+    [Fact]
     public void TryResult_Success_HasIsSuccessTrue()
     {
         var result = TryResult.Success();
 
-        Assert.That(result.IsSuccess, Is.True);
+        Assert.True(result.IsSuccess);
     }
 
-    [Test]
+    [Fact]
     public void TryResult_WithError_HasIsSuccessFalse()
     {
         var error = new Error("TEST_CODE", "Test error message");
 
         TryResult result = error;
 
-        Assert.Multiple(() =>
-        {
-            Assert.That(result.IsSuccess, Is.False);
-            Assert.That(result.Error!.Code, Is.EqualTo("TEST_CODE"));
-            Assert.That(result.Error!.Message, Is.EqualTo("Test error message"));
-        });
+        Assert.False(result.IsSuccess);
+        Assert.Equal("TEST_CODE", result.Error!.Code);
+        Assert.Equal("Test error message", result.Error!.Message);
     }
 
-    [Test]
+    [Fact]
     public void TryResultT_Success_ValueIsAccessible()
     {
         var value = "hello";
 
         TryResult<string> result = TryResult.Success(value);
 
-        Assert.Multiple(() =>
-        {
-            Assert.That(result.IsSuccess, Is.True);
-            Assert.That(result.Value, Is.EqualTo(value));
-        });
+        Assert.True(result.IsSuccess);
+        Assert.Equal(value, result.Value);
     }
 
-    [Test]
+    [Fact]
     public void TryResultT_WithError_ValueIsNull()
     {
         var error = new Error("TEST_CODE", "Test error message");
 
         TryResult<string> result = error;
 
-        Assert.Multiple(() =>
-        {
-            Assert.That(result.IsSuccess, Is.False);
-            Assert.That(result.Value, Is.Null);
-        });
+        Assert.False(result.IsSuccess);
+        Assert.Null(result.Value);
     }
 }

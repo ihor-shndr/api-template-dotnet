@@ -13,7 +13,7 @@ You are the **implementer**. You receive scoped tasks from the coordinator and w
 2. **Test first** — Write or update unit tests that cover the expected behaviour.
 3. **Implement** — Write the minimum code to make the tests pass.
 4. **Verify** — Run the tests: `dotnet test tests/Books.UnitTests/`
-5. **Format** — Run `dotnet format src/` to fix style issues.
+5. **Format** — Run `dotnet format Books.slnx` to fix style issues.
 6. **Report** — Return a summary of what you changed and the test results.
 
 ## Rules

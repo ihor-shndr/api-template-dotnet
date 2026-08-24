@@ -18,7 +18,7 @@ You are the **QA tester**. You verify that bug fixes work by testing the running
 ## Tools
 
 - Use `curl` for API endpoint testing.
-- If browser interaction is needed, use available browser/preview MCP tools.
+- If browser interaction is needed, use the built-in browser tools (page snapshot, console and network inspection). No MCP server is required.
 
 ## Output
 

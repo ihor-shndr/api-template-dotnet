@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
 COPY src/Books.API/Books.API.csproj src/Books.API/
@@ -11,7 +11,7 @@ RUN dotnet restore src/Books.API/Books.API.csproj
 COPY src/ src/
 RUN dotnet publish src/Books.API/Books.API.csproj -c Release -o /app/publish --no-restore /p:UseAppHost=false
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine
+FROM mcr.microsoft.com/dotnet/aspnet:10.0-alpine
 WORKDIR /app
 COPY --from=build /app/publish .
 

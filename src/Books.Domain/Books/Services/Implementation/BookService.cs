@@ -11,7 +11,7 @@ public class BookService(ILogger<BookService> logger, IBookDao bookDao) : IBookS
     {
         var result = await bookDao.GetBookAsync(id);
 
-        if(!result.IsSuccess)
+        if (!result.IsSuccess)
         {
             logger.LogError(result.Error.Message);
 

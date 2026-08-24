@@ -1,27 +1,26 @@
+using Books.Common.TryResult;
 using Books.Domain.Books.DataAccess;
 using Books.Domain.Books.Models;
 using Books.Domain.Books.Services.Implementation;
-using Books.Common.TryResult;
 using Microsoft.Extensions.Logging;
-using Moq;
+using NSubstitute;
 
 namespace Books.UnitTests.Books;
 
 public class BookServiceTests
 {
-    private Mock<IBookDao> _mockBookDao;
-    private Mock<ILogger<BookService>> _mockLogger;
-    private BookService _bookService;
+    private readonly IBookDao _bookDao;
+    private readonly ILogger<BookService> _logger;
+    private readonly BookService _bookService;
 
-    [SetUp]
-    public void Setup()
+    public BookServiceTests()
     {
-        _mockBookDao = new Mock<IBookDao>();
-        _mockLogger = new Mock<ILogger<BookService>>();
-        _bookService = new BookService(_mockLogger.Object, _mockBookDao.Object);
+        _bookDao = Substitute.For<IBookDao>();
+        _logger = Substitute.For<ILogger<BookService>>();
+        _bookService = new BookService(_logger, _bookDao);
     }
 
-    [Test]
+    [Fact]
     public async Task GetBookAsync_WhenBookExists_ReturnsBook()
     {
         var bookId = 1;
@@ -32,47 +31,39 @@ public class BookServiceTests
             CreatedDate = DateTime.Now
         };
 
-        _mockBookDao.Setup(x => x.GetBookAsync(bookId))
-                   .ReturnsAsync(TryResult.Success(expectedBook));
+        _bookDao.GetBookAsync(bookId)
+                .Returns(TryResult.Success(expectedBook));
 
         var result = await _bookService.GetBookAsync(bookId);
 
-        Assert.Multiple(() =>
-        {
-            Assert.That(result.IsSuccess, Is.True);
-            Assert.That(result.Value.Title, Is.EqualTo(expectedBook.Title));
-            Assert.That(result.Value.Author, Is.EqualTo(expectedBook.Author));
-        });
+        Assert.True(result.IsSuccess);
+        Assert.Equal(expectedBook.Title, result.Value.Title);
+        Assert.Equal(expectedBook.Author, result.Value.Author);
     }
 
-    [Test]
+    [Fact]
     public async Task GetBookAsync_WhenBookNotFound_ReturnsError()
     {
         var bookId = 99;
         var error = new Error(BookErrorCodes.BookNotFound, "Book not found");
 
-        _mockBookDao.Setup(x => x.GetBookAsync(bookId))
-                   .ReturnsAsync((TryResult<Book>)error);
+        _bookDao.GetBookAsync(bookId)
+                .Returns((TryResult<Book>)error);
 
         var result = await _bookService.GetBookAsync(bookId);
 
-        Assert.Multiple(() =>
-        {
-            Assert.That(result.IsSuccess, Is.False);
-            Assert.That(result.Error!.Code, Is.EqualTo(BookErrorCodes.BookNotFound));
-        });
+        Assert.False(result.IsSuccess);
+        Assert.Equal(BookErrorCodes.BookNotFound, result.Error!.Code);
 
-        _mockLogger.Verify(
-            x => x.Log(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, t) => true),
-                It.IsAny<Exception?>(),
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-            Times.Once);
+        _logger.Received(1).Log(
+            LogLevel.Error,
+            Arg.Any<EventId>(),
+            Arg.Any<Arg.AnyType>(),
+            Arg.Any<Exception?>(),
+            Arg.Any<Func<Arg.AnyType, Exception?, string>>());
     }
 
-    [Test]
+    [Fact]
     public async Task GetBookAsync_WhenBookExists_AllFieldsAreMapped()
     {
         var bookId = 2;
@@ -84,17 +75,14 @@ public class BookServiceTests
             CreatedDate = createdDate
         };
 
-        _mockBookDao.Setup(x => x.GetBookAsync(bookId))
-                   .ReturnsAsync(TryResult.Success(expectedBook));
+        _bookDao.GetBookAsync(bookId)
+                .Returns(TryResult.Success(expectedBook));
 
         var result = await _bookService.GetBookAsync(bookId);
 
-        Assert.Multiple(() =>
-        {
-            Assert.That(result.IsSuccess, Is.True);
-            Assert.That(result.Value.Title, Is.EqualTo(expectedBook.Title));
-            Assert.That(result.Value.Author, Is.EqualTo(expectedBook.Author));
-            Assert.That(result.Value.CreatedDate, Is.EqualTo(createdDate));
-        });
+        Assert.True(result.IsSuccess);
+        Assert.Equal(expectedBook.Title, result.Value.Title);
+        Assert.Equal(expectedBook.Author, result.Value.Author);
+        Assert.Equal(createdDate, result.Value.CreatedDate);
     }
 }

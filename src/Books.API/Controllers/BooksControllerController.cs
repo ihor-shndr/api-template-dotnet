@@ -9,8 +9,8 @@ namespace BookShelf.API.Controllers;
 [Route("books")]
 public class BooksController(IBookService bookService, IBookMapper mapper) : ApiControllerBase
 {
-    [HttpGet( "{bookId:int}")]
-    public async Task<ActionResult<BookContract>> GetBook([FromRoute]int bookId)
+    [HttpGet("{bookId:int}")]
+    public async Task<ActionResult<BookContract>> GetBook([FromRoute] int bookId)
     {
         var bookResult = await bookService.GetBookAsync(bookId);
 
