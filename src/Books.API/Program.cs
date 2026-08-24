@@ -18,7 +18,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UsePathBase(new PathString("/api"));
+app.UsePathBase(new PathString("/api/v1"));
 app.MapControllers();
 app.UseStatusCodePages();
 app.MapHealthChecks("/health");

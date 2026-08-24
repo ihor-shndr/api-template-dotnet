@@ -417,4 +417,4 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
-.DS_Store
+.DS_Store.superpowers/
