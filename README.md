@@ -4,12 +4,11 @@ A **.NET 8 Clean Architecture** REST API template with a **multi-agent AI setup*
 
 ## 📋 Prerequisites
 
-**AI tools** (pick one or both):
+**AI tool:**
 
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) (CLI or VS Code extension) — Anthropic's coding agent
-- [GitHub Copilot](https://github.com/features/copilot) (VS Code / JetBrains) — GitHub's AI coding assistant
 
-Both tools read agent definitions from `.agents/`. Claude Code uses a `.claude/` symlink; Copilot picks up agents natively from `.agents/`.
+Agent definitions live in `.agents/`; Claude Code reads them through a `.claude/` symlink.
 
 **💡 Key concepts you'll see here:**
 
@@ -91,7 +90,6 @@ The coordinator never writes code. The implementer never commits. The reviewer n
   settings.local.json      ← 🔒 tool permissions
 
 .mcp.json                  ← 🔌 MCP servers for Claude Code (Playwright)
-.vscode/mcp.json           ← 🔌 MCP servers for GitHub Copilot (Playwright)
 .github/git-commit-instructions.md ← 📝 commit message rules (Conventional Commits)
 
 AGENTS.md                  ← 📖 shared codebase context (architecture, conventions, patterns)
@@ -102,7 +100,7 @@ CLAUDE.md                  ← 📎 imports AGENTS.md for Claude Code
 
 | File | Purpose | Who reads it |
 |------|---------|-------------|
-| `AGENTS.md` | Architecture rules, naming conventions, error patterns, what to avoid | All agents + Copilot |
+| `AGENTS.md` | Architecture rules, naming conventions, error patterns, what to avoid | All agents |
 | `*.agent.md` | Single agent's role, workflow steps, output format, constraints | That specific agent |
 | `SKILL.md` | Reusable slash command (like a script with AI reasoning) | The tool running it |
 
@@ -114,24 +112,19 @@ Agents can call external services via [MCP (Model Context Protocol)](https://mod
 |------------|---------|---------|
 | Playwright | `manual-qa`, any agent | Browser automation, UI testing, page snapshots |
 
-MCP configs are included in the repo:
-
-| File | Tool | What's configured |
-|------|------|-------------------|
-| `.mcp.json` | Claude Code | Playwright |
-| `.vscode/mcp.json` | GitHub Copilot | Playwright |
+MCP servers are configured in `.mcp.json` (Claude Code) and checked into the repo.
 
 The `coordinator` uses `gh` CLI for draft PRs (no MCP needed). The `manual-qa` agent will fall back to `curl` if Playwright is not available.
 
-## 🔗 Shared config across tools
+## 🔗 Agent config layout
 
-All AI configuration lives in `.agents/` and is shared via symlinks:
+All AI configuration lives in `.agents/` and is exposed to Claude Code via a symlink:
 
 ```
 .claude/ → .agents/    (Claude Code)
 ```
 
-Copilot reads `.agents/` directly — no symlink needed. This means the same agents, skills, and rules work across tools without duplication.
+Keeping the definitions in `.agents/` means the agents, skills, and rules stay in one place instead of being duplicated per tool.
 
 ## 🚀 Running the app
 
@@ -152,10 +145,6 @@ API at `http://localhost:5265`. Health check: `GET /api/health`.
 ```
 
 Claude will pick up the `coordinator` agent, which will plan → branch → implement → review → commit → draft PR — without you invoking anything manually.
-
-### GitHub Copilot
-
-In Copilot Chat, select the `coordinator` agent from the dropdown, then type your request.
 
 ### Example 1: Feature implementation
 
