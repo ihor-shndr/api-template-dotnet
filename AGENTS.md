@@ -6,7 +6,7 @@ This file provides AI agents with everything needed to work effectively in this 
 
 ## Project Overview
 
-**Books API** is a Clean Architecture template for .NET 8 REST APIs. Its purpose is to demonstrate patterns and conventions that should be followed when building new APIs at this org. It is intentionally minimal — a single domain (Books) with one GET endpoint — so the structure and conventions are easy to follow without business logic noise.
+**Books API** is a Clean Architecture template for .NET 10 REST APIs. Its purpose is to demonstrate patterns and conventions that should be followed when building new APIs at this org. It is intentionally minimal — a single domain (Books) with one GET endpoint — so the structure and conventions are easy to follow without business logic noise.
 
 Do not mistake simplicity for incompleteness. The architecture, error handling, naming, and DI patterns are intentional and should be preserved when adding features.
 
@@ -22,7 +22,7 @@ src/
   Books.Data/                 # Data access: repositories (DAOs), entities, seed data
   Books.Common/               # Shared primitives: TryResult error monad
 tests/
-  Books.UnitTests/            # NUnit unit tests, Moq for mocking
+  Books.UnitTests/            # xUnit v3 unit tests (Microsoft Testing Platform), NSubstitute for mocking
 ```
 
 **Dependency direction (strict):**
@@ -156,16 +156,44 @@ The project currently uses in-memory seed data (`BookSeedData`). A real database
 
 ## Testing
 
-**Framework:** NUnit 3 with Moq.
+**Framework:** xUnit v3 running on [Microsoft Testing Platform (MTP)](https://learn.microsoft.com/dotnet/core/testing/microsoft-testing-platform-intro), with NSubstitute for test doubles. There is no VSTest, no NUnit, no Moq — do not reintroduce them.
+
+MTP is opted into by `global.json` at the repo root:
+
+```json
+{ "test": { "runner": "Microsoft.Testing.Platform" } }
+```
+
+The test project must set `<OutputType>Exe</OutputType>` — xUnit v3 test projects are executables and the build fails without it.
+
+Run tests with `dotnet test tests/Books.UnitTests/Books.UnitTests.csproj`. For coverage, add `--coverage` (provided by `Microsoft.Testing.Extensions.CodeCoverage`). The VSTest-era `--collect:"XPlat Code Coverage"` / coverlet collector flow does **not** work under MTP.
 
 **Location:** `tests/Books.UnitTests/{Domain}/`
 
 **Conventions:**
 - Class name: `{ClassUnderTest}Tests`
 - Method name: `{MethodName}_{Condition}_{ExpectedOutcome}` (e.g., `GetBookAsync_WhenBookExists_ReturnsBook`)
-- Use `[SetUp]` to initialize mocks and the system under test
+- Mark tests with `[Fact]` (or `[Theory]` + `[InlineData]` for parameterised cases)
+- Initialize substitutes and the system under test in the **constructor** — xUnit creates a new instance per test, so there is no `[SetUp]`. Use `IDisposable`/`IAsyncLifetime` for teardown if ever needed.
+- Substitute all dependencies via `Substitute.For<T>()` (not `Mock<T>`), inject via constructor, and store them in `private readonly` fields
 - Test the domain service, not the DAO or controller in unit tests
-- Mock all dependencies via `Mock<T>`, inject via constructor
+
+**NSubstitute cheat sheet:**
+
+```csharp
+private readonly IBookDao _bookDao = Substitute.For<IBookDao>();
+
+// stub a return value (works directly for Task<T>-returning methods)
+_bookDao.GetBookAsync(bookId).Returns(TryResult.Success(book));
+
+// assert a call happened exactly once
+await _bookDao.Received(1).GetBookAsync(bookId);
+
+// assert a call never happened
+await _bookDao.DidNotReceive().GetBookAsync(Arg.Any<int>());
+```
+
+Assertions are xUnit's, and **expected comes first**: `Assert.Equal(expected, actual)`, `Assert.True(x)`, `Assert.Null(x)`. There is no `Assert.Multiple` — write sequential asserts.
 
 **What to test:**
 - All service methods with at least one success path and one failure path
@@ -231,6 +259,15 @@ dotnet run --project src/Books.API    # Start the API
 ```
 
 The health check endpoint is `GET /api/health`.
+
+**API documentation** uses the built-in ASP.NET Core OpenAPI stack (`Microsoft.AspNetCore.OpenApi`) with [Scalar](https://scalar.com/) as the UI. Swashbuckle / Swagger UI has been removed — do not reintroduce it.
+
+`Program.cs` registers `builder.Services.AddOpenApi()`, then `app.MapOpenApi()` and `app.MapScalarApiReference()` inside the `IsDevelopment()` block, so docs are **not** served outside Development. Because `app.UsePathBase(new PathString("/api"))` applies to the whole app, both live under `/api`:
+
+- OpenAPI document: `http://localhost:5265/api/openapi/v1.json`
+- Scalar UI: `http://localhost:5265/api/scalar`
+
+Note that controllers declare routes *without* the `api/` prefix (e.g. `[Route("books")]`) — the prefix comes from `UsePathBase`, not from the route template. Keep it that way.
 
 Environment variables follow the ASP.NET Core double-underscore convention for nested config:
 - `Database__ConnectionString` → `DatabaseConfig.ConnectionString`

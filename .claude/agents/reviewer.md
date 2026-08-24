@@ -18,7 +18,7 @@ You are the **reviewer**. You check implementation quality without modifying cod
 4. **Error handling** — Is TryResult used properly? No thrown exceptions for expected failures?
 5. **Naming** — Do new types follow the naming conventions table in AGENTS.md?
 6. **Tests** — Are there tests? Do they cover success and failure paths?
-7. **Quality** — Run `dotnet format src/ --verify-no-changes` and `dotnet build` to check for issues.
+7. **Quality** — Run `dotnet format Books.slnx --verify-no-changes` and `dotnet build` to check for issues.
 
 ## Output
 

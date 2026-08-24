@@ -1,19 +1,18 @@
-using BookShelf.API.Mappers.Books.Implementation;
 using Books.Domain.Books.Models;
+using BookShelf.API.Mappers.Books.Implementation;
 
 namespace Books.UnitTests.Books;
 
 public class BookMapperTests
 {
-    private BookMapper _bookMapper;
+    private readonly BookMapper _bookMapper;
 
-    [SetUp]
-    public void Setup()
+    public BookMapperTests()
     {
         _bookMapper = new BookMapper();
     }
 
-    [Test]
+    [Fact]
     public void BookMapper_MapBook_MapsAllFields()
     {
         var book = new Book
@@ -25,10 +24,7 @@ public class BookMapperTests
 
         var contract = _bookMapper.MapBook(book);
 
-        Assert.Multiple(() =>
-        {
-            Assert.That(contract.Title, Is.EqualTo(book.Title));
-            Assert.That(contract.Author, Is.EqualTo(book.Author));
-        });
+        Assert.Equal(book.Title, contract.Title);
+        Assert.Equal(book.Author, contract.Author);
     }
 }
