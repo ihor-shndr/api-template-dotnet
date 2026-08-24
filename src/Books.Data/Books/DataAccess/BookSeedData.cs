@@ -16,8 +16,8 @@ internal static class BookSeedData
         new()
         {
             Id = 2,
-            Title = "War and Peace",
-            Author = "Leo Tolstoy",
+            Title = "The Count of Monte Cristo",
+            Author = "Alexandre Dumas",
             CreatedDate = new DateTime(2025, 1, 2, 0, 0, 0, DateTimeKind.Utc)
         },
         new()
@@ -44,15 +44,15 @@ internal static class BookSeedData
         new()
         {
             Id = 6,
-            Title = "The Brothers Karamazov",
-            Author = "Fyodor Dostoevsky",
+            Title = "Ivanhoe",
+            Author = "Sir Walter Scott",
             CreatedDate = new DateTime(2025, 1, 6, 0, 0, 0, DateTimeKind.Utc)
         },
         new()
         {
             Id = 7,
-            Title = "Crime and Punishment",
-            Author = "Fyodor Dostoevsky",
+            Title = "Les Misérables",
+            Author = "Victor Hugo",
             CreatedDate = new DateTime(2025, 1, 7, 0, 0, 0, DateTimeKind.Utc)
         },
         new()
@@ -142,8 +142,8 @@ internal static class BookSeedData
         new()
         {
             Id = 20,
-            Title = "The Master and Margarita",
-            Author = "Mikhail Bulgakov",
+            Title = "Frankenstein",
+            Author = "Mary Shelley",
             CreatedDate = new DateTime(2025, 1, 20, 0, 0, 0, DateTimeKind.Utc)
         }
     ];
