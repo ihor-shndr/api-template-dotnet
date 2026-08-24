@@ -18,6 +18,12 @@
       "runtimeExecutable": "docker-compose",
       "runtimeArgs": ["up", "books-api"],
       "port": 8080
+    },
+    {
+      "name": "Books Web",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "src/Books.Web"],
+      "port": 5173
     }
   ]
 }

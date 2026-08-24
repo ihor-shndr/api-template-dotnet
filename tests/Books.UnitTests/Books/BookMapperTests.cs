@@ -26,5 +26,6 @@ public class BookMapperTests
 
         Assert.Equal(book.Title, contract.Title);
         Assert.Equal(book.Author, contract.Author);
+        Assert.Equal(book.CreatedDate, contract.CreatedDate);
     }
 }

@@ -6,5 +6,5 @@ namespace BookShelf.API.Mappers.Books.Implementation;
 public class BookMapper : IBookMapper
 {
     public BookContract MapBook(Book book) =>
-        new(book.Title, book.Author);
+        new(book.Title, book.Author, book.CreatedDate);
 }

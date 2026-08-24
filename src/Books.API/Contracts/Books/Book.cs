@@ -2,5 +2,6 @@ namespace BookShelf.API.Contracts.Books;
 
 public record BookContract(
     string Title,
-    string Author
+    string Author,
+    DateTime CreatedDate
 );

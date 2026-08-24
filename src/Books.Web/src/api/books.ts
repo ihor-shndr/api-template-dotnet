@@ -2,6 +2,7 @@ export type Book = {
   id: number
   title: string
   author: string
+  createdDate: string
 }
 
 const API_BASE_URL =
@@ -16,22 +17,33 @@ export async function getBook(id: number | string): Promise<Book> {
     )
   }
 
-  const data = (await response.json()) as { title: string; author: string }
+  const data = (await response.json()) as {
+    title: string
+    author: string
+    createdDate: string
+  }
 
   return {
     id: Number(id),
     title: data.title,
     author: data.author,
+    createdDate: data.createdDate,
   }
 }
 
-// Mocked until a real list-books endpoint exists on the backend.
-// Only this function's body should need to change once that endpoint ships.
+// Fetches the known seed ids one by one until a real bulk list-books endpoint
+// exists on the backend. This is isolated behind one function, swap for a
+// real bulk endpoint later.
+const SEED_BOOK_IDS = Array.from({ length: 20 }, (_, index) => index + 1)
+
 export async function listBooks(): Promise<Book[]> {
-  return Promise.resolve([
-    { id: 1, title: 'Molloy', author: 'Samuel Beckett' },
-    { id: 2, title: 'Malone Dies', author: 'Samuel Beckett' },
-    { id: 3, title: 'In Search of Lost Time', author: 'Marcel Proust' },
-    { id: 4, title: 'The Unnamable', author: 'Samuel Beckett' },
-  ])
+  const results = await Promise.allSettled(SEED_BOOK_IDS.map(getBook))
+
+  return results
+    .filter(
+      (result): result is PromiseFulfilledResult<Book> =>
+        result.status === 'fulfilled',
+    )
+    .map((result) => result.value)
+    .sort((a, b) => a.id - b.id)
 }
