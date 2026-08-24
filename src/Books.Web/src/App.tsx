@@ -20,12 +20,17 @@ function App() {
     setId(null)
   }
 
+  const handleSelect = (selectedId: string) => {
+    window.history.pushState({}, '', `?id=${selectedId}`)
+    setId(selectedId)
+  }
+
   return (
     <main className="page">
       {id ? (
         <BookDetailsPage id={id} onBack={handleBack} />
       ) : (
-        <BookListPage />
+        <BookListPage onSelect={handleSelect} />
       )}
     </main>
   )

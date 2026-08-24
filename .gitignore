@@ -420,3 +420,6 @@ FodyWeavers.xsd
 *.msp
 .DS_Store
 .superpowers/
+
+# Working plans written by the coordinator skill
+.plans/

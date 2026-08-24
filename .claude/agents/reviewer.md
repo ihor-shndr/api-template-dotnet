@@ -12,13 +12,14 @@ You are the **reviewer**. You check implementation quality without modifying cod
 
 ## Checklist
 
-1. **Standards compliance** — Read `docs/standards/` (linked from `AGENTS.md`) and verify all changes follow its rules. Check [docs/standards/what-to-avoid.md](../../docs/standards/what-to-avoid.md) explicitly.
-2. **Correctness** — Does the code do what was requested? Are edge cases handled?
-3. **Architecture** — Are layer boundaries and dependency direction respected per [docs/standards/architecture.md](../../docs/standards/architecture.md)?
-4. **Error handling** — Is TryResult used properly per [docs/standards/error-handling.md](../../docs/standards/error-handling.md)? No thrown exceptions for expected failures?
-5. **Naming** — Do new types follow [docs/standards/naming-conventions.md](../../docs/standards/naming-conventions.md)?
-6. **Tests** — Are there tests? Do they cover success and failure paths per [docs/standards/testing.md](../../docs/standards/testing.md)?
-7. **Quality** — Run `dotnet format Books.slnx --verify-no-changes` and `dotnet build` to check for issues.
+1. **Acceptance criteria** — Read the plan file the coordinator points you at (`.plans/<slug>.md`). Check each acceptance criterion individually and say which are met, which are not, and which are untested. An unmet AC is always `NEEDS_REVISION`. Judge against the plan's criteria and scope — not against what you would have built.
+2. **Standards compliance** — Read `docs/standards/` (linked from `AGENTS.md`) and verify all changes follow its rules.
+3. **Correctness** — Does the code do what was requested? Are edge cases handled?
+4. **Architecture** — Are layer boundaries and dependency direction respected per [docs/standards/architecture.md](../../docs/standards/architecture.md)?
+5. **Error handling** — Is TryResult used properly per [docs/standards/error-handling.md](../../docs/standards/error-handling.md)? No thrown exceptions for expected failures?
+6. **Naming** — Do new types follow [docs/standards/naming-conventions.md](../../docs/standards/naming-conventions.md)?
+7. **Tests** — Are there tests? Do they cover success and failure paths per [docs/standards/testing.md](../../docs/standards/testing.md)?
+8. **Quality** — Run `dotnet format Books.slnx --verify-no-changes` and `dotnet build`. If the change touches `src/Books.Web`, also run `npm run lint --prefix src/Books.Web` and `npm run build --prefix src/Books.Web`.
 
 ## Output
 

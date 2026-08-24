@@ -6,24 +6,35 @@ All service and DAO methods return `TryResult<T>` — a custom result monad defi
 // DAO returns a TryResult
 public async Task<TryResult<Book>> GetBookAsync(int id)
 {
-    var entity = await ...;
-    if (entity is null)
-        return new Error(BookErrorCodes.BookNotFound, "Book was not found.");
-    return MapToDomain(entity); // implicit conversion to TryResult<Book>
+    var book = BookSeedData.Books.FirstOrDefault(b => b.Id == id);
+
+    if (book is null)
+        return new Error(BookErrorCodes.BookNotFound, $"Book with ID {id} not found");
+
+    return await Task.FromResult(new Book
+    {
+        Title = book.Title,
+        Author = book.Author,
+        CreatedDate = book.CreatedDate
+    }); // implicit conversion to TryResult<Book>
 }
 
 // Service checks result before proceeding
-var result = await _bookDao.GetBookAsync(id);
+var result = await bookDao.GetBookAsync(id);
 if (!result.IsSuccess)
-    return result.Error!; // propagate upward
+    return result.Error; // propagate upward
 
-return result.Value!;
+return result.Value;
 ```
 
-**In the controller**, `ApiControllerBase.HandleErrorResponse()` translates domain `Error` objects to `ProblemDetails` HTTP responses. The mapping from error code to status code lives in the controller — not in the domain.
+`IsSuccess` carries `[MemberNotNullWhen]` annotations, so once you have checked it the compiler knows `Error` and `Value` are non-null. Do not add `!`.
+
+**In the controller**, `ApiControllerBase.HandleErrorResponse()` translates domain `Error` objects into `ProblemDetails` HTTP responses. Error-code-to-status mapping lives in the API layer, never in the domain.
 
 **Adding a new error code:**
 1. Add a string constant to the relevant `*ErrorCodes` class in `Books.Domain`
-2. Add a `case` for it in the appropriate controller's `HandleErrorResponse` override
+2. Add a `case` for it to the `MapErrorToStatusCode` switch in `src/Books.API/Controllers/ApiControllerBase.cs`
+
+Note that `HandleErrorResponse` and `MapErrorToStatusCode` are `static` on the shared base class — they are not virtual and cannot be overridden per controller. Every controller therefore shares one switch. That is fine at the current size; if a second domain area lands and the switch starts mixing unrelated error codes, move the mapping to a per-domain strategy rather than growing the switch indefinitely.
 
 See also: [Naming Conventions](naming-conventions.md) for error code naming, [Controllers](controllers.md) for error translation.

@@ -9,9 +9,31 @@ export function BookCover() {
   )
 }
 
-export function BookCard({ book }: { book: Book }) {
+export function BookCard({
+  book,
+  onSelect,
+}: {
+  book: Book
+  onSelect: (id: string) => void
+}) {
   return (
-    <a className="book-card" href={`?id=${book.id}`}>
+    <a
+      className="book-card"
+      href={`?id=${book.id}`}
+      onClick={(event) => {
+        if (
+          event.button !== 0 ||
+          event.metaKey ||
+          event.ctrlKey ||
+          event.shiftKey ||
+          event.altKey
+        ) {
+          return
+        }
+        event.preventDefault()
+        onSelect(String(book.id))
+      }}
+    >
       <BookCover />
       <div className="book-card-info">
         <p className="book-title">{book.title}</p>
@@ -21,7 +43,11 @@ export function BookCard({ book }: { book: Book }) {
   )
 }
 
-export function BookListPage() {
+export function BookListPage({
+  onSelect,
+}: {
+  onSelect: (id: string) => void
+}) {
   const [books, setBooks] = useState<Book[]>([])
 
   useEffect(() => {
@@ -33,7 +59,7 @@ export function BookListPage() {
       <h1>Books</h1>
       <div className="book-grid">
         {books.map((b) => (
-          <BookCard key={b.id} book={b} />
+          <BookCard key={b.id} book={b} onSelect={onSelect} />
         ))}
       </div>
     </>

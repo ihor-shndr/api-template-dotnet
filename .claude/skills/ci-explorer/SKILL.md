@@ -1,6 +1,6 @@
 ---
 name: ci-explorer
-description: 'Debug failed GitHub Actions runs by fetching and analysing logs with gh CLI.'
+description: 'Debug failed GitHub Actions runs by fetching and analysing logs with gh CLI. Use when CI is red, a check failed, or a PR is blocked by a failing run.'
 ---
 
 # CI Explorer

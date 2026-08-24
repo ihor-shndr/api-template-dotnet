@@ -60,7 +60,7 @@ sequenceDiagram
     participant Svc as BookService
     participant Dao as BookDao
 
-    Web->>Api: PUT /api/books/{id}
+    Web->>Api: PUT /api/v1/books/{id}
     Api->>Svc: EditBookAsync(id, ...)
     Svc->>Dao: GetBookAsync(id)
     Dao-->>Svc: TryResult<Book>
@@ -86,7 +86,7 @@ These are left to the implementer to decide per task, based on what that task's 
 
 ## Cross-Cutting Notes
 
-- **API docs**: new endpoints are picked up automatically by the existing OpenAPI + Scalar setup (`/api/scalar` in Development) — no extra wiring needed.
+- **API docs**: new endpoints are picked up automatically by the existing OpenAPI + Scalar setup (`/api/v1/scalar` in Development) — no extra wiring needed.
 - **CORS**: already enabled for local frontend dev; changes are only expected if a new client origin shows up.
 
 ## References

@@ -1,31 +1,31 @@
 ---
 name: docs-drift
-description: 'Analyse the last 10 commits on main and update AGENTS.md and README.md if they have drifted from the code.'
+description: 'Check whether the docs still match the code and fix what drifted. Works from any diff — uncommitted changes, a branch, a PR, or recent commits. Use when docs may be stale or when asked "are the docs still accurate?".'
 ---
 
 # Documentation Drift Check
 
-Review recent changes and fix any documentation that has fallen out of sync.
+Find what changed, then fix any doc that no longer matches.
 
-## Steps
+## 1. Get the diff
 
-1. **Gather changes** — Run `git log --oneline -10 main` and `git diff HEAD~10..HEAD --stat` to understand what changed recently.
-2. **Read docs** — Read `AGENTS.md` and `README.md` in full.
-3. **Compare** — For each commit, check whether the change affects anything documented:
-   - Solution layout or project structure
-   - Architecture layers or dependency direction
-   - Naming conventions
-   - Error handling patterns
-   - DI registration patterns
-   - Local dev setup
-   - Testing conventions
-   - Available skills or agents
-4. **Update** — Edit only the sections that are wrong or missing. Do not rewrite sections that are still accurate.
-5. **Report** — List what you changed and why, or confirm that docs are up to date.
+Use whatever the user pointed at. If they named nothing, take the first of these that returns something:
 
-## Rules
+| Source | How |
+|---|---|
+| A PR | `gh pr diff <number>` |
+| A branch or range | `git diff <base>...<head>` |
+| Uncommitted work | `git diff HEAD` plus `git status --short` for new files |
+| Recent commits | `git log --oneline -10` and `git diff HEAD~10..HEAD` |
 
-- Only update `AGENTS.md` and `README.md`. Do not create new documentation files.
-- Keep edits minimal — fix what drifted, nothing more.
-- If a commit added a new domain area, verify the "Adding a New Domain Area" checklist in AGENTS.md still applies.
-- If no drift is found, say so and stop. Do not make cosmetic changes.
+Say which one you used.
+
+## 2. Compare against the docs
+
+Read `AGENTS.md`, `README.md`, `docs/standards/*`, and the docs under `.claude/`. Most rules live in `docs/standards/` — `AGENTS.md` is mostly links to them.
+
+A doc is drifted only if the code disagrees with it. Verify before editing — check the actual file, endpoint, or command instead of assuming. Paths, ports, and shell commands drift most often. If the same fact is documented in two places, fix both and say so.
+
+## 3. Fix and report
+
+Edit only what is wrong. Do not create new docs, rewrite accurate sections, or make cosmetic changes. Report what you changed and why — or say the docs are current and stop.

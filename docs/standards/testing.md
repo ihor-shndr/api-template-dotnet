@@ -1,6 +1,6 @@
 # Testing
 
-**Framework:** xUnit v3 running on [Microsoft Testing Platform (MTP)](https://learn.microsoft.com/dotnet/core/testing/microsoft-testing-platform-intro), with NSubstitute for test doubles. There is no VSTest, no NUnit, no Moq — do not reintroduce them.
+**Framework:** xUnit v3 running on [Microsoft Testing Platform (MTP)](https://learn.microsoft.com/dotnet/core/testing/microsoft-testing-platform-intro), with NSubstitute for test doubles. No NUnit, no Moq — do not reintroduce them. (`xunit.runner.visualstudio` is still referenced so IDE test explorers work; tests run under MTP, not VSTest.)
 
 MTP is opted into by `global.json` at the repo root:
 
@@ -8,7 +8,14 @@ MTP is opted into by `global.json` at the repo root:
 { "test": { "runner": "Microsoft.Testing.Platform" } }
 ```
 
-The test project must set `<OutputType>Exe</OutputType>` — xUnit v3 test projects are executables and the build fails without it.
+The test project must also set both of these in its `.csproj`:
+
+```xml
+<OutputType>Exe</OutputType>
+<UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+```
+
+xUnit v3 test projects are executables and the build fails without `OutputType`.
 
 Run tests with `dotnet test tests/Books.UnitTests/Books.UnitTests.csproj`. For coverage, add `--coverage` (provided by `Microsoft.Testing.Extensions.CodeCoverage`). The VSTest-era `--collect:"XPlat Code Coverage"` / coverlet collector flow does **not** work under MTP.
 
@@ -20,7 +27,7 @@ Run tests with `dotnet test tests/Books.UnitTests/Books.UnitTests.csproj`. For c
 - Mark tests with `[Fact]` (or `[Theory]` + `[InlineData]` for parameterised cases)
 - Initialize substitutes and the system under test in the **constructor** — xUnit creates a new instance per test, so there is no `[SetUp]`. Use `IDisposable`/`IAsyncLifetime` for teardown if ever needed.
 - Substitute all dependencies via `Substitute.For<T>()` (not `Mock<T>`), inject via constructor, and store them in `private readonly` fields
-- Test the domain service, not the DAO or controller in unit tests
+- Unit tests target the domain service. The DAO is in-memory seed data and the controller is a thin delegation, so neither is worth unit testing today.
 
 **NSubstitute cheat sheet:**
 
@@ -42,6 +49,6 @@ Assertions are xUnit's, and **expected comes first**: `Assert.Equal(expected, ac
 **What to test:**
 - All service methods with at least one success path and one failure path
 - Error code propagation (verify the exact `BookErrorCodes.*` string is returned on failure)
-- Do not test mappers in isolation unless the mapping is non-trivial
+- Mappers may be tested in isolation (`BookMapperTests` does), but do not add mapper tests for mappings that are a straight field-for-field copy unless you are pinning a contract
 
 When adding a new service, add a corresponding test class before or alongside the implementation.

@@ -1,10 +1,10 @@
-name: Tests
+name: CI
 
 on:
   pull_request:
 
 jobs:
-  test:
+  backend:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,7 +17,36 @@ jobs:
           dotnet-version: "10.0.x"
 
       - name: Restore
-        run: dotnet restore tests/Books.UnitTests/Books.UnitTests.csproj
+        run: dotnet restore Books.slnx
+
+      - name: Build
+        run: dotnet build Books.slnx --configuration Release --no-restore
+
+      - name: Verify formatting
+        run: dotnet format Books.slnx --verify-no-changes
 
       - name: Run tests
         run: dotnet test tests/Books.UnitTests/Books.UnitTests.csproj --configuration Release --no-restore
+
+  frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: src/Books.Web/package-lock.json
+
+      - name: Install
+        run: npm ci --prefix src/Books.Web
+
+      - name: Lint
+        run: npm run lint --prefix src/Books.Web
+
+      - name: Build
+        run: npm run build --prefix src/Books.Web

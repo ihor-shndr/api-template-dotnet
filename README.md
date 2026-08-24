@@ -1,151 +1,92 @@
 # 📚 Books API — Multi-Agent AI Demo
 
-A **.NET 10 Clean Architecture** REST API template with a **multi-agent AI setup** baked in. The app itself is intentionally minimal (one domain, one endpoint) so you can focus on how the agents work together rather than business logic.
+A **.NET 10 Clean Architecture** REST API with a **multi-agent AI setup** baked in. The app is intentionally minimal — one domain, one endpoint — so the focus stays on how the agents work together.
 
-## 📋 Prerequisites
+Needs [Claude Code](https://docs.anthropic.com/en/docs/claude-code), the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0), [`gh`](https://cli.github.com/) for PRs and CI, and [Node.js](https://nodejs.org/) 20+ for the demo frontend. Everything in `.claude/` is picked up automatically.
 
-**AI tool:**
+Planning pulls requirements from two external systems over MCP: the task tracker, declared in [`.mcp.json`](.mcp.json), and Confluence, which comes from your own Atlassian connector rather than this repo. Without both connected, `gather-context` cannot fetch requirements and the cycle stalls before the first gate.
 
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) (CLI or VS Code extension) — Anthropic's coding agent
+## 💡 Concepts
 
-Agent and skill definitions live in `.claude/` and are picked up automatically.
-
-**💡 Key concepts you'll see here:**
-
-- 🤖 **Agent** — an AI sub-process with a focused role, its own system prompt, and constraints on what it can/cannot do. Defined in `.claude/agents/*.md`.
-- ⚡ **Skill** — a reusable slash command (like `/run-locally`) that triggers a predefined workflow. Defined in `.claude/skills/*/SKILL.md`.
-- 🔌 **Tooling** — agents reach the outside world with what the harness already provides: the `manual-qa` agent drives the running API with `curl` and Claude Code's built-in browser tools, and the `coordinator` uses the `gh` CLI for PRs. No MCP servers are configured — add a `.mcp.json` if you need one.
-- 📖 **AGENTS.md** — a shared context file that all AI tools load automatically. Contains architecture rules, naming conventions, and patterns the agents must follow.
-
-**Other tools:**
-
-- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) — to build and run the app
-- [GitHub CLI (`gh`)](https://cli.github.com/) — used by `/ci-explorer` for CI logs
+- 🤖 **Agent** — a sub-process with a focused role, its own prompt, and its own context window. Defined in `.claude/agents/*.md`.
+- ⚡ **Skill** — a reusable workflow, invocable as a slash command. Defined in `.claude/skills/*/SKILL.md`.
+- 📖 **AGENTS.md** — shared context every agent loads: architecture rules, naming conventions, patterns to follow.
 
 ## 🤔 Why multi-agent?
 
-A single AI chat can write code, but it tries to do everything at once — plan, implement, review, test. That leads to shortcuts, missed issues, and a bloated context window that degrades quality as the conversation grows.
-
-Sub-agents solve both problems. Each one runs in **its own context window** — it gets only the information it needs, does its job, and returns a short result to the coordinator. This keeps every agent focused and prevents the context from filling up with irrelevant history. It also mirrors how a real team works:
+A single chat tries to plan, implement, review and test all at once — which means shortcuts, missed issues, and a context window that degrades as it grows. Sub-agents each run in **their own context window**, so every one stays focused. It mirrors a real team:
 
 | Role | Human team | AI agent |
 |------|-----------|----------|
-| 🧑‍💼 Tech lead | Plans the approach, delegates, reviews scope | `coordinator` |
+| 🧑‍💼 Tech lead | Plans the approach, delegates, reviews scope | `coordinator` skill |
+| 📋 Analyst | Pulls requirements before anyone plans | `gather-context` |
 | 👨‍💻 Developer | Writes code and tests | `implement` |
 | 🔍 Code reviewer | Catches bugs, checks standards | `reviewer` |
-| 🧪 QA engineer | Verifies fixes in a running app | `manual-qa` |
+| 🧪 QA engineer | Verifies changes against a running app | `manual-qa` |
 
-Each agent has **one job**, a **focused prompt**, and **clear boundaries** (e.g. the reviewer cannot edit files, the implementer cannot commit). This separation prevents the "do everything" drift you get with a single prompt.
+The boundaries are the point: the coordinator never writes code, the implementer never commits, the reviewer never edits files.
 
 ## ⚙️ How it works
 
-```
-You: "Add a GET /api/books endpoint with a feature flag"
- |
- v
-+--------------+
-| Coordinator  |  1. Reads codebase, creates a plan, asks for your OK
-+--------------+
- |
- v
-+--------------+
-| Implement    |  2. Writes tests first, then code. Runs dotnet test & format
-+--------------+
- |
- v
-+--------------+
-| Reviewer     |  3. Checks against AGENTS.md rules
-+--------------+
- |
- |-- NEEDS_REVISION --> back to Implement (max 2 rounds)
- |
- |-- APPROVED
- v (optional, for bug fixes)
-+--------------+
-| Manual QA    |  4. Hits the running API with curl/browser to verify
-+--------------+
- |
- v
-+--------------+
-| Coordinator  |  5. Commits + creates draft PR + tags @codex
-+--------------+
+```mermaid
+flowchart TD
+    You["🗣️ You: 'Implement Delete Book'"]
+    Ctx["📋 <b>gather-context</b><br/>Task from the tracker<br/>Requirements from Confluence<br/>Tech design, if any"]
+    Ask["❓ <b>Clarify</b><br/>Blocking questions only<br/>one batch, each with a default"]
+    Plan["🧑‍💼 <b>Coordinator</b><br/>Reads the code, plans against the ACs"]
+    Gate1{{"🚦 <b>GATE 1</b><br/>You approve the plan"}}
+    Impl["👨‍💻 <b>Implement</b><br/>Writes code, then tests<br/>One test per AC"]
+    Review["🔍 <b>Reviewer</b><br/>Checks the ACs + AGENTS.md rules"]
+    QA["🧪 <b>Manual QA</b><br/>Drives the real app — API via curl,<br/>UI in the browser"]
+    Gate2{{"🚦 <b>GATE 2</b><br/>You review the diff, tests<br/>and QA evidence, then approve"}}
+    Ship["🧑‍💼 <b>Coordinator</b><br/>Commits + draft PR"]
+    CI{"🤖 CI checks"}
+    Done["✅ Green — PR ready for review"]
+
+    You --> Ctx --> Ask --> Plan --> Gate1 --> Impl --> Review
+    Review -->|"NEEDS_REVISION<br/>(max 2 rounds)"| Impl
+    Review -->|APPROVED| QA
+    QA --> Gate2 --> Ship --> CI
+    CI -->|pass| Done
+    CI -->|"fail — diagnose,<br/>then your go-ahead"| Impl
+
+    style Ctx fill:#e7f1ff,stroke:#0d6efd,stroke-width:2px,color:#000
+    style Ask fill:#e7f1ff,stroke:#0d6efd,stroke-width:2px,color:#000
+    style Gate1 fill:#fff3cd,stroke:#d39e00,stroke-width:2px,color:#000
+    style Gate2 fill:#fff3cd,stroke:#d39e00,stroke-width:2px,color:#000
+    style Done fill:#d4edda,stroke:#28a745,color:#000
 ```
 
-The coordinator never writes code. The implementer never commits. The reviewer never edits files. These constraints are what make the system reliable.
+Requirements drive the cycle. The approved plan is written to `.plans/<slug>.md` with the acceptance criteria copied verbatim, and every sub-agent reads that one file — so the implementer, the reviewer and QA all work from the same criteria instead of a retyped summary.
 
-## 📁 Project structure
+Two human gates keep you in control: nothing is implemented before you approve the plan, and nothing is committed or pushed before you approve the finished, tested work.
+
+## 📁 What's in `.claude/`
 
 ```
-.claude/
-  agents/
-    coordinator.md         ← 🧑‍💼 orchestrator (the only one you invoke directly)
-    implement.md           ← 👨‍💻 writes code and tests
-    reviewer.md            ← 🔍 reviews against AGENTS.md rules
-    manual-qa.md           ← 🧪 tests the running app
-  skills/
-    run-locally/           ← ⚡ /run-locally — start the API via dotnet run
-    docs-drift/            ← ⚡ /docs-drift — check if docs match recent commits
-    ci-explorer/           ← ⚡ /ci-explorer — debug failed GitHub Actions runs
-  launch.json              ← ▶️ run configurations for the API (http, https, docker)
-
-.github/git-commit-instructions.md ← 📝 commit message rules (Conventional Commits)
-
-AGENTS.md                  ← 📖 shared codebase context (architecture, conventions, patterns)
-CLAUDE.md                  ← 📎 imports AGENTS.md for Claude Code
+agents/
+  gather-context.md ← 📋 fetches tracker task + Confluence requirements
+  implement.md      ← 👨‍💻 writes code and tests
+  reviewer.md       ← 🔍 reviews against AGENTS.md rules and the ACs
+  manual-qa.md      ← 🧪 tests the running app against the ACs
+skills/
+  coordinator/      ← ⚡ /coordinator — orchestrates the whole cycle
+  run-locally/      ← ⚡ /run-locally — start the API and frontend
+  docs-drift/       ← ⚡ /docs-drift — check docs against any diff
+  ci-explorer/      ← ⚡ /ci-explorer — debug a red CI run
+launch.json         ← ▶️ run configurations (API http/https/docker, frontend)
 ```
-
-### 📌 What goes where
-
-| File | Purpose | Who reads it |
-|------|---------|-------------|
-| `AGENTS.md` | Architecture rules, naming conventions, error patterns, what to avoid | All agents |
-| `agents/*.md` | Single agent's role, workflow steps, output format, constraints | That specific agent |
-| `SKILL.md` | Reusable slash command (like a script with AI reasoning) | The tool running it |
-
-## 🚀 Running the app
-
-```bash
-dotnet run --project src/Books.API
-```
-
-API at `http://localhost:5265`. Health check: `GET /api/v1/health`.
-
-API docs are generated by the built-in ASP.NET Core OpenAPI stack (`Microsoft.AspNetCore.OpenApi`) and rendered by [Scalar](https://scalar.com/) — no Swashbuckle/Swagger UI. Both are registered in the `Development` environment only, and sit behind the `/api/v1` path base:
-
-| What | URL |
-|------|-----|
-| OpenAPI document (JSON) | `http://localhost:5265/api/v1/openapi/v1.json` |
-| Scalar API reference UI | `http://localhost:5265/api/v1/scalar` |
-
-The `http` and `https` launch profiles open the Scalar UI automatically.
 
 ## 🎮 Try it
 
-### Claude Code (CLI or VS Code)
+Implementation tasks go through the `coordinator` skill — name a feature from the tracker, or invoke `/coordinator` explicitly:
 
-`CLAUDE.md` tells Claude to route all implementation tasks through the `coordinator` automatically. Just describe what you want:
+- *"Implement Delete Book"*
+- *"Implement Edit Book"*
+- *"Implement Create Book"*
 
-```
-> Add a GET /api/v1/books endpoint that returns all books, guarded by a .NET feature flag EnableBooksList using Microsoft.FeatureManagement
-```
+Those are real tasks in the **ADLC Demo** project, each linked to its Confluence requirements — the coordinator fetches the acceptance criteria before it plans. (List Books and Book Details are already done.)
 
-Claude will pick up the `coordinator` agent, which will plan → branch → implement → review → commit → draft PR — without you invoking anything manually.
-
-### Example 1: Feature implementation
-
-Ask for a feature — the coordinator handles the full cycle:
-
-- *"Add a GET /api/v1/books endpoint with a .NET feature flag `EnableBooksList`"*
-- *"Add a GET endpoint that returns a book by ID"*
-- *"The health check returns 500 when the DB is unreachable — fix it"*
-
-### Example 2: Debug a failed CI run
-
-Use the `/ci-explorer` skill to investigate GitHub Actions failures:
-
-- *"CI is red, what happened?"*
-- *"/ci-explorer"*
-
-It will fetch the failed run logs with `gh`, find the error, and suggest a fix.
+To run the app yourself, use `/run-locally`.
 
 The agents are simple markdown files. Read them, tweak them, break them — that's the point of a demo project. 🛠️
