@@ -12,7 +12,7 @@ You are the **reviewer**. You check implementation quality without modifying cod
 
 ## Checklist
 
-1. **Acceptance criteria** — Read the plan file the coordinator points you at (`.plans/<slug>.md`). Check each acceptance criterion individually and say which are met, which are not, and which are untested. An unmet AC is always `NEEDS_REVISION`. Judge against the plan's criteria and scope — not against what you would have built.
+1. **Acceptance criteria** — Read the plan file the coordinator points you at (`.adlc/<slug>/plan.md`). Check each acceptance criterion individually and say which are met, which are not, and which are untested. An unmet AC is always `NEEDS_REVISION`. Judge against the plan's criteria and scope — not against what you would have built.
 2. **Standards compliance** — Read `docs/standards/` (linked from `AGENTS.md`) and verify all changes follow its rules.
 3. **Correctness** — Does the code do what was requested? Are edge cases handled?
 4. **Architecture** — Are layer boundaries and dependency direction respected per [docs/standards/architecture.md](../../docs/standards/architecture.md)?

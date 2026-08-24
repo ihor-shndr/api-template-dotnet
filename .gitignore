@@ -421,5 +421,5 @@ FodyWeavers.xsd
 .DS_Store
 .superpowers/
 
-# Working plans written by the coordinator skill
-.plans/
+# Per-task working files: plans and QA evidence
+.adlc/

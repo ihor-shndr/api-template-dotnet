@@ -37,5 +37,6 @@ Each server runs in the foreground, so start them as two separate long-running p
 ## Rules
 
 - Never block the session waiting on a server — start it in the background or via a launch configuration.
-- If a port is already in use, the app is probably already running. Check the health endpoint before starting another instance.
+- **The ports are fixed, not incidental.** The API's dev CORS policy allows `http://localhost:5173` only, and the frontend defaults to `http://localhost:5265/api/v1`. Both launch entries set `"autoPort": false` and Vite uses `strictPort`, so a busy port fails loudly rather than binding elsewhere and breaking every request.
+- If a port is already in use, the app is probably already running — including from another session. Check the health endpoint and reuse it instead of starting a second instance.
 - Verify the API is up before testing the UI; a UI error is often just a missing API.

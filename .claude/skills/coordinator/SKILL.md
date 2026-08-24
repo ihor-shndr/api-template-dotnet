@@ -21,16 +21,16 @@ There are **two human gates**. At each one you stop, present what you have, and 
    - Ask nothing if nothing is genuinely blocking. Do not manufacture questions to look thorough. Say "requirements are clear enough" and move on.
    - Never guess silently. A gap you noticed and did not raise is the one that gets built wrong.
 
-3. **Plan** — Write the plan to `.plans/<slug>.md` using the template below, then present it in the conversation. Every sub-agent reads this file, so it is the single source of truth for the task — keep the acceptance criteria in it word-for-word.
+3. **Plan** — Write the plan to `.adlc/<slug>/plan.md` using the template below, then present it in the conversation. Every sub-agent reads this file, so it is the single source of truth for the task — keep the acceptance criteria in it word-for-word.
 
    🚦 **GATE 1 — plan approval.** Stop. Wait for the user to approve or amend the plan. Do not create a branch or touch code before they answer. If they amend it, update the file before continuing.
 
 4. **Branch** — Create a feature branch from main: `feat/<slug>`, `fix/<slug>`, or `chore/<slug>` — the same slug as the plan file.
-5. **Implement** — Delegate each plan step to the `implement` sub-agent (`Agent` tool, `subagent_type: implement`), telling it to read `.plans/<slug>.md` and which step numbers to do. Sub-agents have their own context and cannot see what you read — the file is how they get it.
-6. **Review** — After implementation, delegate to the `reviewer` sub-agent, pointing it at `.plans/<slug>.md`.
-7. **Fix** — If review returns `NEEDS_REVISION`, send the feedback back to `implement` and re-review. Max 2 revision rounds.
-8. **QA** — Whenever a running app could actually show the change (new/changed endpoints, UI changes, bug fixes), delegate to `manual-qa`, pointing it at `.plans/<slug>.md`. It drives the API and the web app, so say which surfaces the change touches. Skip only when there is nothing to see; say why you skipped.
-9. **Report** — Summarise for the user: what changed (files), the reviewer's verdict, unit test results, and the QA evidence (or why QA was skipped). Note any clarification from step 2 that the Confluence requirements do not yet capture — that is a requirements gap worth writing back.
+5. **Implement** — Delegate each plan step to the `implement` sub-agent (`Agent` tool, `subagent_type: implement`), telling it to read `.adlc/<slug>/plan.md` and which step numbers to do. Sub-agents have their own context and cannot see what you read — the file is how they get it.
+6. **Review** — After implementation, delegate to the `reviewer` sub-agent, pointing it at `.adlc/<slug>/plan.md`. Append its verdict verbatim to `.adlc/<slug>/review.md` under a `## Round N` heading — the reviewer has no write tools, so persisting it is your job.
+7. **Fix** — If review returns `NEEDS_REVISION`, send the findings back to `implement` and re-review, appending each round to the same file. Max 2 revision rounds. Keep the earlier rounds — what was caught and then fixed is the most interesting part of the record.
+8. **QA** — Whenever a running app could actually show the change (new/changed endpoints, UI changes, bug fixes), delegate to `manual-qa`, pointing it at `.adlc/<slug>/plan.md`. It drives the API and the web app, so say which surfaces the change touches. Save its report to `.adlc/<slug>/qa.md`; it writes the artefacts themselves into `evidence/`. Skip only when there is nothing to see; say why you skipped.
+9. **Report** — Summarise for the user: what changed (files), the reviewer's verdict, unit test results, and a per-criterion QA table linking each evidence file in `.adlc/<slug>/evidence/` (or why QA was skipped). Link `review.md` and `qa.md` too, so the full record is one click away rather than buried in the transcript. Link the screenshots so they can be opened, rather than only asserting the criteria passed. Note any clarification from step 2 that the Confluence requirements do not yet capture — that is a requirements gap worth writing back.
 
    🚦 **GATE 2 — pre-commit approval.** Stop. Wait for the user's go-ahead. Nothing is committed, pushed, or opened as a PR before they answer.
 
@@ -38,9 +38,21 @@ There are **two human gates**. At each one you stop, present what you have, and 
 11. **Draft PR** — Push the branch and create a draft pull request using `gh pr create --draft`.
 12. **Check CI** — Wait for the PR checks with `gh pr checks --watch`. If they pass, report the PR URL and green status and stop. If any check fails, diagnose it the way the `ci-explorer` skill does (`gh run view <run-id> --log-failed`) and report the failure and its root cause. Fixing it is a new round: get the user's go-ahead, delegate the fix to `implement`, then commit, push, and re-check.
 
-## Plan file
+## Task folder
 
-`.plans/<slug>.md`, where `<slug>` is a short kebab-case name for the work (`delete-book`). Gitignored — a working artifact, not a deliverable.
+Everything for one task lives in `.adlc/<slug>/`, where `<slug>` is a short kebab-case name for the work (`delete-book`) and matches the branch name. Gitignored — working artifacts, not deliverables.
+
+```
+.adlc/delete-book/
+  plan.md                                    ← you write this at step 3
+  review.md                                  ← you append each review round at step 6/7
+  qa.md                                      ← you write the QA report at step 8
+  evidence/
+    ac-1.1-book-removed-from-list.png        ← manual-qa writes these at step 8
+    ac-2.1-delete-missing-book-404.txt
+```
+
+You persist `review.md` and `qa.md` from what the sub-agents return, verbatim. `reviewer` has no write tools at all, and `manual-qa` may write only into `evidence/` — so neither can quietly rewrite its own verdict after the fact.
 
 ```markdown
 # <Feature>

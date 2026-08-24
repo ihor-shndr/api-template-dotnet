@@ -5,26 +5,30 @@
       "name": "Books API - HTTP",
       "runtimeExecutable": "dotnet",
       "runtimeArgs": ["run", "--project", "src/Books.API", "--launch-profile", "http"],
-      "port": 5265
+      "port": 5265,
+      "autoPort": false
     },
     {
       "name": "Books API - HTTPS",
       "runtimeExecutable": "dotnet",
       "runtimeArgs": ["run", "--project", "src/Books.API", "--launch-profile", "https"],
       "port": 7033,
-      "url": "https://localhost:7033"
+      "url": "https://localhost:7033",
+      "autoPort": false
     },
     {
       "name": "Books API - Docker",
       "runtimeExecutable": "docker",
       "runtimeArgs": ["compose", "up", "books-api"],
-      "port": 8080
+      "port": 8080,
+      "autoPort": false
     },
     {
       "name": "Books Web",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev", "--prefix", "src/Books.Web"],
-      "port": 5173
+      "port": 5173,
+      "autoPort": false
     }
   ]
 }
