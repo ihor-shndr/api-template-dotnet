@@ -1,6 +1,7 @@
 ---
 name: reviewer
 description: Review code changes for correctness, architecture compliance, and quality.
+tools: Read, Grep, Glob, Bash
 ---
 
 # Code Review Agent

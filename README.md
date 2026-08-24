@@ -8,12 +8,12 @@ A **.NET 8 Clean Architecture** REST API template with a **multi-agent AI setup*
 
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) (CLI or VS Code extension) — Anthropic's coding agent
 
-Agent definitions live in `.agents/`; Claude Code reads them through a `.claude/` symlink.
+Agent definitions, skills, and MCP config live in `.claude/` and are picked up automatically.
 
 **💡 Key concepts you'll see here:**
 
-- 🤖 **Agent** — an AI sub-process with a focused role, its own system prompt, and constraints on what it can/cannot do. Defined in `.agents/agents/*.agent.md`.
-- ⚡ **Skill** — a reusable slash command (like `/run-locally`) that triggers a predefined workflow. Defined in `.agents/skills/*/SKILL.md`.
+- 🤖 **Agent** — an AI sub-process with a focused role, its own system prompt, and constraints on what it can/cannot do. Defined in `.claude/agents/*.md`.
+- ⚡ **Skill** — a reusable slash command (like `/run-locally`) that triggers a predefined workflow. Defined in `.claude/skills/*/SKILL.md`.
 - 🔌 **MCP (Model Context Protocol)** — a standard that lets AI tools call external services (browsers, GitHub, Jira, etc.) via plugins. The `manual-qa` agent uses Playwright MCP for browser testing. The `coordinator` uses `gh` CLI for PRs.
 - 📖 **AGENTS.md** — a shared context file that all AI tools load automatically. Contains architecture rules, naming conventions, and patterns the agents must follow.
 
@@ -77,17 +77,17 @@ The coordinator never writes code. The implementer never commits. The reviewer n
 ## 📁 Project structure
 
 ```
-.agents/
+.claude/
   agents/
-    coordinator.agent.md   ← 🧑‍💼 orchestrator (the only one you invoke directly)
-    implement.agent.md     ← 👨‍💻 writes code and tests
-    reviewer.agent.md      ← 🔍 reviews against AGENTS.md rules
-    manual-qa.agent.md     ← 🧪 tests the running app
+    coordinator.md         ← 🧑‍💼 orchestrator (the only one you invoke directly)
+    implement.md           ← 👨‍💻 writes code and tests
+    reviewer.md            ← 🔍 reviews against AGENTS.md rules
+    manual-qa.md           ← 🧪 tests the running app
   skills/
     run-locally/           ← ⚡ /run-locally — start the API via dotnet run
     docs-drift/            ← ⚡ /docs-drift — check if docs match recent commits
     ci-explorer/           ← ⚡ /ci-explorer — debug failed GitHub Actions runs
-  settings.local.json      ← 🔒 tool permissions
+  launch.json              ← ▶️ run configurations for the API (http, https, docker)
 
 .mcp.json                  ← 🔌 MCP servers for Claude Code (Playwright)
 .github/git-commit-instructions.md ← 📝 commit message rules (Conventional Commits)
@@ -101,7 +101,7 @@ CLAUDE.md                  ← 📎 imports AGENTS.md for Claude Code
 | File | Purpose | Who reads it |
 |------|---------|-------------|
 | `AGENTS.md` | Architecture rules, naming conventions, error patterns, what to avoid | All agents |
-| `*.agent.md` | Single agent's role, workflow steps, output format, constraints | That specific agent |
+| `agents/*.md` | Single agent's role, workflow steps, output format, constraints | That specific agent |
 | `SKILL.md` | Reusable slash command (like a script with AI reasoning) | The tool running it |
 
 ## 🔌 MCP servers
@@ -115,16 +115,6 @@ Agents can call external services via [MCP (Model Context Protocol)](https://mod
 MCP servers are configured in `.mcp.json` (Claude Code) and checked into the repo.
 
 The `coordinator` uses `gh` CLI for draft PRs (no MCP needed). The `manual-qa` agent will fall back to `curl` if Playwright is not available.
-
-## 🔗 Agent config layout
-
-All AI configuration lives in `.agents/` and is exposed to Claude Code via a symlink:
-
-```
-.claude/ → .agents/    (Claude Code)
-```
-
-Keeping the definitions in `.agents/` means the agents, skills, and rules stay in one place instead of being duplicated per tool.
 
 ## 🚀 Running the app
 
