@@ -1,6 +1,7 @@
 ---
 name: gather-context
 description: Fetch the task, its Confluence requirements, and any relevant tech design, and return a compact summary. Use before planning any implementation task.
+model: haiku
 ---
 
 # Gather Context Agent

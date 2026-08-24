@@ -1,7 +1,8 @@
 ---
 name: manual-qa
 description: Verify a change against its acceptance criteria by testing the running application through HTTP requests or browser interaction.
-tools: Read, Grep, Glob, Bash, Skill, mcp__Claude_Browser__preview_start, mcp__Claude_Browser__preview_logs, mcp__Claude_Browser__navigate, mcp__Claude_Browser__read_page, mcp__Claude_Browser__get_page_text, mcp__Claude_Browser__find, mcp__Claude_Browser__computer, mcp__Claude_Browser__form_input, mcp__Claude_Browser__read_console_messages, mcp__Claude_Browser__read_network_requests, mcp__Claude_Browser__resize_window
+model: sonnet
+tools: Read, Grep, Glob, Bash, Skill, mcp__Claude_Browser__*
 ---
 
 # Manual QA Agent

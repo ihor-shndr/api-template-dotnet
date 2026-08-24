@@ -1,6 +1,7 @@
 ---
 name: implement
 description: Execute implementation tasks delegated by the coordinator — write code, tests, and run quality checks.
+model: sonnet
 ---
 
 # Implement Agent
