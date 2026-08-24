@@ -9,8 +9,8 @@ internal static class BookSeedData
         new()
         {
             Id = 1,
-            Title = "Don Quixote",
-            Author = "Miguel de Cervantes",
+            Title = "The Waste Land",
+            Author = "T. S. Eliot",
             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc)
         },
         new()
