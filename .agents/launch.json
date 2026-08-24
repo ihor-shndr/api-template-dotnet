@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Books API - HTTP",
+      "runtimeExecutable": "/usr/local/share/dotnet/dotnet",
+      "runtimeArgs": ["run", "--project", "src/Books.API", "--launch-profile", "http"],
+      "port": 5265
+    },
+    {
+      "name": "Books API - HTTPS",
+      "runtimeExecutable": "dotnet",
+      "runtimeArgs": ["run", "--project", "src/Books.API", "--launch-profile", "https"],
+      "port": 7033
+    },
+    {
+      "name": "Books API - Docker",
+      "runtimeExecutable": "docker-compose",
+      "runtimeArgs": ["up", "books-api"],
+      "port": 8080
+    }
+  ]
+}
