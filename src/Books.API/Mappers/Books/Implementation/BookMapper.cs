@@ -1,7 +1,7 @@
 using Books.Domain.Books.Models;
-using BookShelf.API.Contracts.Books;
+using Books.API.Contracts.Books;
 
-namespace BookShelf.API.Mappers.Books.Implementation;
+namespace Books.API.Mappers.Books.Implementation;
 
 public class BookMapper : IBookMapper
 {

@@ -1,4 +1,4 @@
-using BookShelf.API.Configuration;
+using Books.API.Configuration;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

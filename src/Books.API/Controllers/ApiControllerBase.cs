@@ -2,7 +2,7 @@ using Books.Common.TryResult;
 using Books.Domain.Books.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BookShelf.API.Controllers;
+namespace Books.API.Controllers;
 
 public abstract class ApiControllerBase : ControllerBase
 {

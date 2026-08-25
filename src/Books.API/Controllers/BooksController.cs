@@ -1,9 +1,9 @@
 using Books.Domain.Books.Services;
-using BookShelf.API.Contracts.Books;
-using BookShelf.API.Mappers.Books;
+using Books.API.Contracts.Books;
+using Books.API.Mappers.Books;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BookShelf.API.Controllers;
+namespace Books.API.Controllers;
 
 [ApiController]
 [Route("books")]

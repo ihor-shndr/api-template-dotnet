@@ -1,4 +1,4 @@
-namespace BookShelf.API.Configuration;
+namespace Books.API.Configuration;
 
 public class DatabaseConfig
 {

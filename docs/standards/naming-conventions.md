@@ -16,9 +16,10 @@ One public type per file, and the file is named after the type it contains.
 
 ## Namespaces
 
-Namespaces follow the folder structure, with two deliberate exceptions:
+Every project's root namespace is its own name (`Books.API.*`, `Books.Domain.*`, `Books.Data.*`, `Books.Common.*`), and namespaces then follow the folder structure. No project sets `<RootNamespace>` — MSBuild defaults it to the project name, which is what we want; adding an override that disagrees with the assembly name is how namespaces and folders drift apart.
 
-- **`Books.API` uses the root namespace `BookShelf.API`**, set via `<RootNamespace>` in `Books.API.csproj`. Every other project uses its own name as the root (`Books.Domain.*`, `Books.Data.*`, `Books.Common.*`). This is a leftover from an earlier rename; match the existing files rather than mixing both.
+There is one deliberate exception:
+
 - **DI modules declare `namespace Microsoft.Extensions.DependencyInjection;`** so `Program.cs` picks up the extension methods without an extra `using`. See [Dependency Injection](dependency-injection.md).
 
-Outside those two cases, do not flatten or skip folders. Note that interface and implementation are split: the interface sits in the folder (`Services/IBookService.cs`), the implementation one level down in `Implementation/` (`Services/Implementation/BookService.cs`), and the namespace follows.
+Outside that one case, do not flatten or skip folders. Note that interface and implementation are split: the interface sits in the folder (`Services/IBookService.cs`), the implementation one level down in `Implementation/` (`Services/Implementation/BookService.cs`), and the namespace follows.

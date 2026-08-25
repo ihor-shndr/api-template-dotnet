@@ -1,4 +1,4 @@
-namespace BookShelf.API.Contracts.Books;
+namespace Books.API.Contracts.Books;
 
 public record BookContract(
     string Title,

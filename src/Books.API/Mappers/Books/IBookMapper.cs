@@ -1,6 +1,6 @@
-using BookShelf.API.Contracts.Books;
+using Books.API.Contracts.Books;
 using Books.Domain.Books.Models;
-namespace BookShelf.API.Mappers.Books;
+namespace Books.API.Mappers.Books;
 
 public interface IBookMapper
 {

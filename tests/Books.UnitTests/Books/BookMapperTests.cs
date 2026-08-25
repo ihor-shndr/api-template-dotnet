@@ -1,5 +1,5 @@
 using Books.Domain.Books.Models;
-using BookShelf.API.Mappers.Books.Implementation;
+using Books.API.Mappers.Books.Implementation;
 
 namespace Books.UnitTests.Books;
 
