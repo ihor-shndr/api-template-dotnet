@@ -41,14 +41,14 @@ flowchart TD
     Gate2{{"🚦 <b>GATE 2</b><br/>You review the diff, tests<br/>and QA evidence, then approve"}}
     Ship["🧑‍💼 <b>Coordinator</b><br/>Commits + draft PR"]
     CI{"🤖 CI checks"}
-    Done["✅ Green — PR ready for review"]
+    Done["✅ Green — PR out of draft,<br/>task commented + moved to In Review"]
 
     You --> Ctx --> Ask --> Plan --> Gate1 --> Impl --> Review
     Review -->|"NEEDS_REVISION<br/>(max 2 rounds)"| Impl
     Review -->|APPROVED| QA
     QA --> Gate2 --> Ship --> CI
-    CI -->|pass| Done
-    CI -->|"fail — diagnose,<br/>then your go-ahead"| Impl
+    CI -->|"pass"| Done
+    CI -->|"fail — stays a draft,<br/>task untouched"| Impl
 
     style Ctx fill:#e7f1ff,stroke:#0d6efd,stroke-width:2px,color:#000
     style Ask fill:#e7f1ff,stroke:#0d6efd,stroke-width:2px,color:#000
@@ -57,9 +57,19 @@ flowchart TD
     style Done fill:#d4edda,stroke:#28a745,color:#000
 ```
 
-Requirements drive the cycle. Each task gets a gitignored folder — `.adlc/<slug>/` — holding the approved `plan.md` with the acceptance criteria copied verbatim, plus an `evidence/` folder of QA screenshots and API transcripts named per criterion. Every sub-agent reads that one plan, so the implementer, the reviewer and QA work from the same criteria instead of a retyped summary — and Gate 2 shows you artefacts, not assurances.
+Requirements drive the cycle, and the whole run leaves a paper trail in a gitignored `.adlc/<slug>/` folder:
 
-Two human gates keep you in control: nothing is implemented before you approve the plan, and nothing is committed or pushed before you approve the finished, tested work.
+```
+.adlc/delete-book/
+  plan.md      ← the approved plan, acceptance criteria copied verbatim
+  review.md    ← every review round: the findings and the replies to them
+  qa.md        ← per-criterion PASS/FAIL
+  evidence/    ← a screenshot or API transcript named after each criterion
+```
+
+Every sub-agent reads that one plan, so the implementer, the reviewer and QA work from the same criteria instead of a retyped summary — and Gate 2 shows you artefacts, not assurances.
+
+Two human gates keep you in control: nothing is implemented before you approve the plan, and nothing is committed or pushed before you approve the finished, tested work. Gate 2 states everything approval sets in motion — including that a green CI run takes the PR out of draft, comments a short summary on the tracker task and moves it to In Review. The loop closes where it started, and the comment says plainly that an agent wrote the code and it still needs human review before merge.
 
 ## 📁 What's in `.claude/`
 

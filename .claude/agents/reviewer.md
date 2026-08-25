@@ -38,3 +38,4 @@ Suggestions: <optional improvements, not blockers>
 - Be specific — reference file paths and line numbers.
 - Only flag real issues. Do not nitpick style if `dotnet format` passes.
 - `NEEDS_REVISION` requires at least one concrete issue with a fix suggestion.
+- On a re-review, respond to the implementer's replies instead of restating your original list: say which findings are now resolved, which still stand and why, and concede the ones where the pushback is correct. Being overruled by better evidence is a good outcome, not a loss.
