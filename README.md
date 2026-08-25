@@ -37,7 +37,7 @@ flowchart TD
     Gate1{{"🚦 <b>GATE 1</b><br/>You approve the plan"}}
     Impl["👨‍💻 <b>Implement</b><br/>Writes code, then tests<br/>One test per AC"]
     Review["🔍 <b>Reviewer</b><br/>Checks the ACs + AGENTS.md rules"]
-    QA["🧪 <b>Manual QA</b><br/>Drives the real app — API via curl,<br/>UI in the browser<br/>Saves a screenshot per AC"]
+    QA["🧪 <b>Manual QA</b><br/>Drives the real app — API via curl,<br/>UI in the browser<br/>Files evidence per AC"]
     Gate2{{"🚦 <b>GATE 2</b><br/>You review the diff, tests<br/>and QA evidence, then approve"}}
     Ship["🧑‍💼 <b>Coordinator</b><br/>Commits + draft PR"]
     CI{"🤖 CI checks"}
@@ -64,7 +64,7 @@ Requirements drive the cycle, and the whole run leaves a paper trail in a gitign
   plan.md      ← the approved plan, acceptance criteria copied verbatim
   review.md    ← every review round: the findings and the replies to them
   qa.md        ← per-criterion PASS/FAIL
-  evidence/    ← a screenshot or API transcript named after each criterion
+  evidence/    ← an API transcript or observation log named after each criterion
 ```
 
 Every sub-agent reads that one plan, so the implementer, the reviewer and QA work from the same criteria instead of a retyped summary — and Gate 2 shows you artefacts, not assurances.
