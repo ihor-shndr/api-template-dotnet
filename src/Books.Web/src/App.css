@@ -32,6 +32,28 @@ a {
   text-decoration: underline;
 }
 
+.delete-button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid crimson;
+  border-radius: 8px;
+  background: none;
+  color: crimson;
+  font: inherit;
+  font-family: var(--sans);
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background: crimson;
+  color: white;
+}
+
+.delete-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .book-details {
   padding: 1.25rem;
   border: 1px solid var(--accent-border);
