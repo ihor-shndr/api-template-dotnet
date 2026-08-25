@@ -6,4 +6,6 @@ namespace Books.Domain.Books.Services;
 public interface IBookService
 {
     Task<TryResult<Book>> GetBookAsync(int id);
+
+    Task<TryResult> DeleteBookAsync(int id);
 }

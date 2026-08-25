@@ -4,7 +4,7 @@ namespace Books.Data.Books.DataAccess;
 
 internal static class BookSeedData
 {
-    internal static readonly BookEntity[] Books =
+    internal static readonly List<BookEntity> Books =
     [
         new()
         {

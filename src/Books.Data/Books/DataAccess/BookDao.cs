@@ -20,4 +20,16 @@ public class BookDao : IBookDao
             CreatedDate = book.CreatedDate
         });
     }
+
+    public async Task<TryResult> DeleteBookAsync(int id)
+    {
+        var book = BookSeedData.Books.FirstOrDefault(b => b.Id == id);
+
+        if (book is null)
+            return new Error(BookErrorCodes.BookNotFound, $"Book with ID {id} not found");
+
+        BookSeedData.Books.Remove(book);
+
+        return await Task.FromResult(TryResult.Success());
+    }
 }
