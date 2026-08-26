@@ -1,6 +1,7 @@
 ---
 name: coordinator
 description: 'Orchestrate task implementation end-to-end — plan, branch, implement, review, QA, commit, and draft PR, with human approval gates after planning and before commit. Use for all new features, bug fixes, and refactors.'
+disable-model-invocation: true
 ---
 
 # Coordinator
