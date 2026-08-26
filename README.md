@@ -20,6 +20,7 @@ A single chat tries to plan, implement, review and test all at once — which me
 |------|-----------|----------|
 | 🧑‍💼 Tech lead | Plans the approach, delegates, reviews scope | `coordinator` skill |
 | 📋 Analyst | Pulls requirements before anyone plans | `gather-context` |
+| 🔎 Code scout | Finds how the change fits the existing code | `Explore` (built-in) |
 | 👨‍💻 Developer | Writes code and tests | `implement` |
 | 🔍 Code reviewer | Catches bugs, checks standards | `reviewer` |
 | 🧪 QA engineer | Verifies changes against a running app | `manual-qa` |
@@ -32,8 +33,9 @@ The boundaries are the point: the coordinator never writes code, the implementer
 flowchart TD
     You["🗣️ You: 'Implement Delete Book'"]
     Ctx["📋 <b>gather-context</b><br/>Task from the tracker<br/>Requirements from Confluence<br/>Tech design, if any"]
+    Res["🔎 <b>Explore</b><br/>Files the change touches<br/>Patterns it must follow"]
     Ask["❓ <b>Clarify</b><br/>Blocking questions only<br/>one batch, each with a default"]
-    Plan["🧑‍💼 <b>Coordinator</b><br/>Reads the code, plans against the ACs"]
+    Plan["🧑‍💼 <b>Coordinator</b><br/>Plans against the ACs"]
     Gate1{{"🚦 <b>GATE 1</b><br/>You approve the plan"}}
     Impl["👨‍💻 <b>Implement</b><br/>Writes code, then tests<br/>One test per AC"]
     Review["🔍 <b>Reviewer</b><br/>Checks the ACs + AGENTS.md rules"]
@@ -43,7 +45,7 @@ flowchart TD
     CI{"🤖 CI checks"}
     Done["✅ Green — PR out of draft,<br/>task commented + moved to In Review"]
 
-    You --> Ctx --> Ask --> Plan --> Gate1 --> Impl --> Review
+    You --> Ctx --> Res --> Ask --> Plan --> Gate1 --> Impl --> Review
     Review -->|"NEEDS_REVISION<br/>(max 2 rounds)"| Impl
     Review -->|APPROVED| QA
     QA --> Gate2 --> Ship --> CI
@@ -89,11 +91,15 @@ launch.json         ← ▶️ run configurations (API http/https/docker, fronte
 
 ## 🎮 Try it
 
-Implementation tasks go through the `coordinator` skill — name a feature from the tracker, or invoke `/coordinator` explicitly:
+Implementation tasks go through the `coordinator` skill. Only you can start it — it is marked `disable-model-invocation`, so Claude will not launch the cycle on its own, and will point you here instead. Invoke it with the feature name:
 
-- *"Implement Delete Book"*
-- *"Implement Edit Book"*
-- *"Implement Create Book"*
+```
+/coordinator Implement Delete Book
+```
+
+- *Implement Delete Book*
+- *Implement Edit Book*
+- *Implement Create Book*
 
 Those are real tasks in the **ADLC Demo** project, each linked to its Confluence requirements — the coordinator fetches the acceptance criteria before it plans. (List Books and Book Details are already done.)
 
