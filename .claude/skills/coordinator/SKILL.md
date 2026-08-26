@@ -30,7 +30,7 @@ There are **two human gates**. At each one you stop, present what you have, and 
 
    🚦 **GATE 1 — plan approval.** Stop. Wait for the user to approve or amend the plan. Do not create a branch or touch code before they answer. If they amend it, update the file before continuing.
 
-5. **Branch** — Create a feature branch from main: `feat/<slug>`, `fix/<slug>`, or `chore/<slug>` — the same slug as the plan file.
+5. **Branch** — Create a feature branch from main: `feat/<name>`, `fix/<name>`, or `chore/<name>`, where `<name>` is the task folder's slug without its date prefix.
 6. **Implement** — Delegate each plan step to the `implement` sub-agent (`Agent` tool, `subagent_type: implement`), telling it to read `.adlc/<slug>/plan.md` and which step numbers to do. Sub-agents have their own context and cannot see what you read — the file is how they get it.
 7. **Review** — After implementation, delegate to the `reviewer` sub-agent, pointing it at `.adlc/<slug>/plan.md`. Append its verdict verbatim to `.adlc/<slug>/review.md` under a `## Round N` heading — the reviewer has no write tools, so persisting it is your job.
 8. **Fix** — If review returns `NEEDS_REVISION`, send the numbered findings back to `implement` and re-review, appending each round to the same file. Record the implementer's reply to each finding next to the reviewer's text, so a round shows both sides. Keep the earlier rounds — what was caught and then fixed is the most interesting part of the record.
@@ -59,10 +59,10 @@ There are **two human gates**. At each one you stop, present what you have, and 
 
 ## Task folder
 
-Everything for one task lives in `.adlc/<slug>/`, where `<slug>` is a short kebab-case name for the work (`delete-book`) and matches the branch name. Gitignored — working artifacts, not deliverables.
+Everything for one task lives in `.adlc/<slug>/`, where `<slug>` is the start date plus a short kebab-case name: `2026-08-27-delete-book`. Get the date from `date +%F`, do not guess it. The branch drops the date (`feat/delete-book`). Gitignored — working artifacts, not deliverables.
 
 ```
-.adlc/delete-book/
+.adlc/2026-08-27-delete-book/
   plan.md                                    ← you write this at step 4
   review.md                                  ← you append each review round at step 7/8
   qa.md                                      ← you write the QA report at step 9
