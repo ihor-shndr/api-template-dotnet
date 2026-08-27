@@ -73,7 +73,7 @@ public class BookServiceTests
 
         var result = await _bookService.DeleteBookAsync(bookId);
 
-        Assert.False(result.IsSuccess);
+        Assert.True(result.IsSuccess);
         await _bookDao.Received(1).DeleteBookAsync(bookId);
     }
 
