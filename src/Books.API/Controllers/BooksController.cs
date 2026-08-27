@@ -18,4 +18,14 @@ public class BooksController(IBookService bookService, IBookMapper mapper) : Api
             ? HandleErrorResponse(bookResult.Error)
             : Ok(mapper.MapBook(bookResult.Value));
     }
+
+    [HttpDelete("{bookId:int}")]
+    public async Task<ActionResult> DeleteBook([FromRoute] int bookId)
+    {
+        var result = await bookService.DeleteBookAsync(bookId);
+
+        return !result.IsSuccess
+            ? HandleErrorResponse(result.Error)
+            : NoContent();
+    }
 }

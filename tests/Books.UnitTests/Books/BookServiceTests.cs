@@ -64,6 +64,42 @@ public class BookServiceTests
     }
 
     [Fact]
+    public async Task DeleteBookAsync_WhenBookExists_RemovesBook()
+    {
+        var bookId = 1;
+
+        _bookDao.DeleteBookAsync(bookId)
+                .Returns(TryResult.Success());
+
+        var result = await _bookService.DeleteBookAsync(bookId);
+
+        Assert.False(result.IsSuccess);
+        await _bookDao.Received(1).DeleteBookAsync(bookId);
+    }
+
+    [Fact]
+    public async Task DeleteBookAsync_WhenBookNotFound_ReturnsError()
+    {
+        var bookId = 99;
+        var error = new Error(BookErrorCodes.BookNotFound, "Book not found");
+
+        _bookDao.DeleteBookAsync(bookId)
+                .Returns((TryResult)error);
+
+        var result = await _bookService.DeleteBookAsync(bookId);
+
+        Assert.False(result.IsSuccess);
+        Assert.Equal(BookErrorCodes.BookNotFound, result.Error!.Code);
+
+        _logger.Received(1).Log(
+            LogLevel.Error,
+            Arg.Any<EventId>(),
+            Arg.Any<Arg.AnyType>(),
+            Arg.Any<Exception?>(),
+            Arg.Any<Func<Arg.AnyType, Exception?, string>>());
+    }
+
+    [Fact]
     public async Task GetBookAsync_WhenBookExists_AllFieldsAreMapped()
     {
         var bookId = 2;
