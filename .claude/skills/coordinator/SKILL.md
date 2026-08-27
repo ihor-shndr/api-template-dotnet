@@ -12,7 +12,7 @@ There are **two human gates**. At each one you stop, present what you have, and 
 
 ## Workflow
 
-1. **Understand** — Delegate to the `gather-context` sub-agent to fetch the tracker task, its Confluence requirements, and any relevant tech design. It returns a compact summary — keep the acceptance criteria it gives you, they drive the rest of the cycle.
+1. **Understand** — Create the task folder `.adlc/<slug>/` (naming below), then delegate to the `gather-context` sub-agent to fetch the tracker task, its Confluence requirements, and any relevant tech design. Save what it returns to `.adlc/<slug>/context.md`, verbatim. The acceptance criteria in it drive the rest of the cycle, and the file is the only record of the tech-design constraints and open questions it found.
 2. **Research the code** — Delegate to the built-in `Explore` sub-agent (`Agent` tool, `subagent_type: Explore`), giving it the acceptance criteria from step 1. Ask it for three things: the files the change will touch, the existing patterns it must follow cited as `path:line`, and anything already in the code that bears on a requirement. It is read-only, so nothing can change before the plan is approved.
 
    Do this **before** the questions, not after. The codebase often answers one you were about to ask, and raises ones you would not have thought to ask. Carry what matters into the plan's **Codebase notes** — that is how the implementers get it.
@@ -63,6 +63,7 @@ Everything for one task lives in `.adlc/<slug>/`, where `<slug>` is the start da
 
 ```
 .adlc/2026-08-27-delete-book/
+  context.md                                 ← you save gather-context's return at step 1
   plan.md                                    ← you write this at step 4
   review.md                                  ← you append each review round at step 7/8
   qa.md                                      ← you write the QA report at step 9
@@ -71,7 +72,7 @@ Everything for one task lives in `.adlc/<slug>/`, where `<slug>` is the start da
     ac-2.1-delete-missing-book-404.txt
 ```
 
-You persist `review.md` and `qa.md` from what the sub-agents return, verbatim. `reviewer` has no write tools at all, and `manual-qa` may write only into `evidence/` — so neither can quietly rewrite its own verdict after the fact.
+You persist `context.md`, `review.md` and `qa.md` from what the sub-agents return, verbatim. `reviewer` has no write tools at all, and `manual-qa` may write only into `evidence/` — so neither can quietly rewrite its own verdict after the fact.
 
 ### `plan.md`
 
