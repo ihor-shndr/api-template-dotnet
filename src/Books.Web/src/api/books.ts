@@ -31,6 +31,18 @@ export async function getBook(id: number | string): Promise<Book> {
   }
 }
 
+export async function deleteBook(id: number | string): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/books/${id}`, {
+    method: 'DELETE',
+  })
+
+  if (!response.ok) {
+    throw new Error(
+      `Failed to delete book ${id}: ${response.status} ${response.statusText}`,
+    )
+  }
+}
+
 // Fetches the known seed ids one by one until a real bulk list-books endpoint
 // exists on the backend. This is isolated behind one function, swap for a
 // real bulk endpoint later.

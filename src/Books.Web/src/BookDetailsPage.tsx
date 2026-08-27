@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getBook, type Book } from './api/books'
+import { deleteBook, getBook, type Book } from './api/books'
 import { BookCover } from './BookListPage'
 
 export function BookDetailsPage({
@@ -12,6 +12,20 @@ export function BookDetailsPage({
   const [book, setBook] = useState<Book | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [deleting, setDeleting] = useState(false)
+
+  const handleDelete = async () => {
+    if (!window.confirm('Delete this book?')) return
+
+    setDeleting(true)
+    try {
+      await deleteBook(id)
+      onBack()
+    } catch {
+      setError('Failed to delete book')
+      setDeleting(false)
+    }
+  }
 
   useEffect(() => {
     let cancelled = false
@@ -54,6 +68,14 @@ export function BookDetailsPage({
             <p className="book-created-date">
               Added {new Date(book.createdDate).toLocaleDateString()}
             </p>
+            <button
+              type="button"
+              className="delete-button"
+              onClick={handleDelete}
+              disabled={deleting}
+            >
+              {deleting ? 'Deleting...' : 'Delete'}
+            </button>
           </div>
         </div>
       )}
