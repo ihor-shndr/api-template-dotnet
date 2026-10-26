@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "accounting-dev": {
-      "type": "http",
-      "url": "https://dev.develop.accounting.enos.empeek.net/mcp"
-    }
-  }
-}
