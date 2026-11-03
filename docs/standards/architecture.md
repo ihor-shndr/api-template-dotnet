@@ -9,12 +9,11 @@ src/
   Books.Domain/               # Business logic: services, interfaces, domain models, error codes
   Books.Data/                 # Data access: DAOs, entities, seed data
   Books.Common/               # Shared primitives: TryResult error monad
-  Books.Web/                  # Vite + React frontend — NOT part of Books.slnx
 tests/
   Books.UnitTests/            # xUnit v3 unit tests (Microsoft Testing Platform), NSubstitute for mocking
 ```
 
-`Books.Web` is deliberately outside the solution, so `dotnet build` / `dotnet format Books.slnx` never see it. Check it with `npm run lint` and `npm run build` instead.
+The React frontend lives in its own repository, [api-template-dotnet-web](https://github.com/ihor-shndr/api-template-dotnet-web).
 
 **Dependency direction (strict):**
 ```

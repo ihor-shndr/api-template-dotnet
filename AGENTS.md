@@ -21,10 +21,11 @@ src/
   Books.Domain/               # Business logic: services, interfaces, domain models, error codes
   Books.Data/                 # Data access: repositories (DAOs), entities, seed data
   Books.Common/               # Shared primitives: TryResult error monad
-  Books.Web/                  # Vite + React frontend (not part of Books.slnx)
 tests/
   Books.UnitTests/            # xUnit v3 unit tests (Microsoft Testing Platform), NSubstitute for mocking
 ```
+
+The React frontend that calls this API lives in its own repository, [api-template-dotnet-web](https://github.com/ihor-shndr/api-template-dotnet-web).
 
 **Dependency direction (strict):** `API → Domain → Common`, `Data → Domain → Common`. `API → Data` has a project reference, but source references to `Books.Data` are confined to `Modules/*.cs`. Never introduce a reference that goes against this flow. Full detail: [docs/standards/architecture.md](docs/standards/architecture.md).
 

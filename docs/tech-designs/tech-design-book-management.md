@@ -24,7 +24,7 @@ Every operation flows through the same layers, in the same direction; adding an 
 
 ```mermaid
 flowchart LR
-    subgraph Web["Books.Web (React SPA)"]
+    subgraph Web["Books.Web (React SPA, separate repo)"]
         UI[Pages / API client]
     end
 

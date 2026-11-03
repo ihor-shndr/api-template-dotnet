@@ -22,13 +22,6 @@
       "runtimeArgs": ["compose", "up", "books-api"],
       "port": 8080,
       "autoPort": false
-    },
-    {
-      "name": "Books Web",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--prefix", "src/Books.Web"],
-      "port": 5173,
-      "autoPort": false
     }
   ]
 }
