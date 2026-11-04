@@ -5,6 +5,7 @@ const string DevCorsPolicy = "DevCors";
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddDbModule();
+builder.AddBookDeletionModule();
 builder.Services.AddBooksModule();
 builder.Services.AddControllers();
 builder.Services.AddProblemDetails();

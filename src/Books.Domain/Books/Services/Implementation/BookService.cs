@@ -20,4 +20,18 @@ public class BookService(ILogger<BookService> logger, IBookDao bookDao) : IBookS
 
         return result.Value;
     }
+
+    public async Task<TryResult> DeleteBookAsync(int id)
+    {
+        var result = await bookDao.DeleteBookAsync(id);
+
+        if (!result.IsSuccess)
+        {
+            logger.LogError(result.Error.Message);
+
+            return result.Error;
+        }
+
+        return TryResult.Success();
+    }
 }

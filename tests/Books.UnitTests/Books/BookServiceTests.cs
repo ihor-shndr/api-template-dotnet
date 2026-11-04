@@ -85,4 +85,29 @@ public class BookServiceTests
         Assert.Equal(expectedBook.Author, result.Value.Author);
         Assert.Equal(createdDate, result.Value.CreatedDate);
     }
+
+    [Fact]
+    public async Task DeleteBookAsync_WhenBookExists_ReturnsSuccessAndForwardsId()
+    {
+        _bookDao.DeleteBookAsync(7).Returns(TryResult.Success());
+
+        var result = await _bookService.DeleteBookAsync(7);
+
+        Assert.True(result.IsSuccess);
+        await _bookDao.Received(1).DeleteBookAsync(7);
+    }
+
+    [Fact]
+    public async Task DeleteBookAsync_WhenBookNotFound_ReturnsSameError()
+    {
+        var error = new Error(BookErrorCodes.BookNotFound, "Book not found");
+        _bookDao.DeleteBookAsync(99).Returns((TryResult)error);
+
+        var result = await _bookService.DeleteBookAsync(99);
+
+        Assert.False(result.IsSuccess);
+        Assert.Equal(error, result.Error);
+        Assert.Equal(BookErrorCodes.BookNotFound, result.Error!.Code);
+        await _bookDao.Received(1).DeleteBookAsync(99);
+    }
 }
