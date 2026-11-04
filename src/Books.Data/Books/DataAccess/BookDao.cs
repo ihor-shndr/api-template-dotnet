@@ -8,9 +8,7 @@ public class BookDao : IBookDao
 {
     public async Task<TryResult<Book>> GetBookAsync(int id)
     {
-        var book = BookSeedData.Books.FirstOrDefault(b => b.Id == id);
-
-        if (book is null)
+        if (!BookStore.Books.TryGetValue(id, out var book))
             return new Error(BookErrorCodes.BookNotFound, $"Book with ID {id} not found");
 
         return await Task.FromResult(new Book
@@ -19,5 +17,14 @@ public class BookDao : IBookDao
             Author = book.Author,
             CreatedDate = book.CreatedDate
         });
+    }
+
+    public Task<TryResult> DeleteBookAsync(int id)
+    {
+        TryResult result = BookStore.Books.TryRemove(id, out _)
+            ? TryResult.Success()
+            : new Error(BookErrorCodes.BookNotFound, $"Book with ID {id} not found");
+
+        return Task.FromResult(result);
     }
 }

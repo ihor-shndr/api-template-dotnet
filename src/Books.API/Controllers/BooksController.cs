@@ -1,5 +1,6 @@
 using Books.Domain.Books.Services;
 using Books.API.Contracts.Books;
+using Books.API.Filters;
 using Books.API.Mappers.Books;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,5 +18,16 @@ public class BooksController(IBookService bookService, IBookMapper mapper) : Api
         return !bookResult.IsSuccess
             ? HandleErrorResponse(bookResult.Error)
             : Ok(mapper.MapBook(bookResult.Value));
+    }
+
+    [HttpDelete("{bookId:int}")]
+    [ServiceFilter<BookDeletionGuardFilter>]
+    public async Task<IActionResult> DeleteBook([FromRoute] int bookId)
+    {
+        var result = await bookService.DeleteBookAsync(bookId);
+
+        return !result.IsSuccess
+            ? HandleErrorResponse(result.Error)
+            : NoContent();
     }
 }
